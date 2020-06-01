@@ -20,12 +20,16 @@ const Button = ({ text, handleClick }) => {
 const Statistic = ({ stats, count }) => {
   return (
     <>
-      <p> {stats}: {count} </p>
+      <tr>
+        <td> {stats} </td>
+        <td> {count} </td>
+      </tr>
     </>
   );
 };
 
 const Statistics = ({ feedback }) => {
+  console.log('feedback', feedback);
   const [good, neutral, bad] = feedback;
   const totalCount = good + neutral + bad;
   const ave = (good - bad) / totalCount;
@@ -40,12 +44,16 @@ const Statistics = ({ feedback }) => {
   }
   return (
     <>
-      <Statistic stats="Good" count={good} />
-      <Statistic stats="Neutral" count={neutral} />
-      <Statistic stats="Bad" count={bad} />
-      <Statistic stats="All" count={totalCount} />
-      <Statistic stats="Average" count={ave} />
-      <Statistic stats="Positive" count={`${percent} %`} />
+      <table>
+        <tbody>
+          <Statistic stats="Good" count={good} />
+          <Statistic stats="Neutral" count={neutral} />
+          <Statistic stats="Bad" count={bad} />
+          <Statistic stats="All" count={totalCount} />
+          <Statistic stats="Average" count={ave} />
+          <Statistic stats="Positive" count={`${percent} %`} />
+        </tbody>
+      </table>
     </>
   );
 };
