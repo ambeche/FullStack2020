@@ -2,10 +2,10 @@ import React from 'react'
 
 const Person = ({name, number, capitalizeName}) => <div> {capitalizeName(name)}   {number}</div>
 
-const Persons = ({persons, capitalizeName}) => {
+const Persons = ({lstToDisplay, capitalizeName}) => {
     return (
         <div>
-             {persons.map((p) => (
+             {lstToDisplay.map((p) => (
         <Person key={p.name} name={p.name} number={p.number} capitalizeName={capitalizeName} />
       ))}
         </div>
