@@ -1,12 +1,12 @@
 import React from 'react'
 
-const Person = ({name, capitalizeName}) => <div> {capitalizeName(name)} </div>
+const Person = ({name, number, capitalizeName}) => <div> {capitalizeName(name)}   {number}</div>
 
 const Persons = ({persons, capitalizeName}) => {
     return (
         <div>
              {persons.map((p) => (
-        <Person key={p.name} name={p.name} capitalizeName={capitalizeName} />
+        <Person key={p.name} name={p.name} number={p.number} capitalizeName={capitalizeName} />
       ))}
         </div>
     )

@@ -5,12 +5,21 @@ import Persons from "./components/Persons";
 const Header = ({ text }) => <h2>{text}</h2>;
 
 const App = () => {
-  const [persons, setPersons] = useState([{ name: "Arto Hellas" }]);
+  const [persons, setPersons] = useState([
+    { name: "Arto Hellas", number: "0457897850" },
+    { name: "Beto Mel", number: "0557897859" },
+    { name: "Sari Nadia", number: "0489897800" },
+  ]);
   const [newName, setNewName] = useState("");
+  const [newNumber, setNewNumber] = useState("");
 
-  const addName = (e) => {
+  const addPerson = (e) => {
     e.preventDefault();
-    const newPerson = { name: newName };
+    const newPerson = {
+      name: newName,
+      number: newNumber,
+    };
+
     const isPresent = persons.some(
       (p) => p.name.toLowerCase() === newPerson.name.toLowerCase()
     );
@@ -23,12 +32,18 @@ const App = () => {
       : setPersons(persons.concat(newPerson));
 
     setNewName("");
+    setNewNumber("");
     console.log("persons", persons);
   };
 
   const handleNameChange = (e) => {
     console.log("newName", e.target.value);
     setNewName(e.target.value);
+  };
+
+  const handleNumberChange = (e) => {
+    console.log("newNumber", e.target.value);
+    setNewNumber(e.target.value);
   };
 
   const capitalizeName = (str) => {
@@ -41,7 +56,13 @@ const App = () => {
     return cap;
   };
 
-  const handlers = [addName, handleNameChange, newName];
+  const handlers = [
+    addPerson,
+    handleNameChange,
+    handleNumberChange,
+    newName,
+    newNumber,
+  ];
 
   return (
     <div>
