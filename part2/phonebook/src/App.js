@@ -1,23 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
 import Filter from "./components/Filter";
+import axios from "axios";
 
 const Header = ({ text }) =>
   text === "Phonebook" ? <h2>{text}</h2> : <h3>{text}</h3>;
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: "Arto Hellas", number: "0457897850" },
-    { name: "Beto Mel", number: "0557897859" },
-    { name: "Sari Nadia", number: "0489897800" },
-    { name: "tamanji Che", number: "758575857" },
-    { name: "ciara che", number: "89700089" },
-    { name: "katrina salonen", number: "09999094560" },
-  ]);
+  const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [searchText, setSearchText] = useState("");
+
+  useEffect(() => {
+    const getPersons = async () => {
+      try {
+        const res = await axios.get("http://localhost:3001/persons");
+        console.log("fetched persons", res.data);
+        setPersons(res.data);
+        console.log("res", res);
+      } catch (e) {
+        console.error(e.message);
+      }
+    };
+    getPersons();
+  }, []);
 
   const addPerson = (e) => {
     e.preventDefault();
@@ -85,7 +93,8 @@ const App = () => {
     newName,
     newNumber,
   ];
-
+  console.log('persons before effect', persons.length);
+  
   return (
     <div>
       <Header text="Phonebook" />
