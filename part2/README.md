@@ -2,4 +2,4 @@
 ## Projects Completed
 * **courseinfo-2**
 * **phonebook**
-* **country-data-fetcher**
+* **data-for-countries**
