@@ -13,13 +13,11 @@ const App = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const res = await axios.get("https://restcountries.eu/rest/v2/all");
-
         const api_key = process.env.REACT_APP_API_KEY;
-        console.log("apiKey", api_key);
-
+        const res = await axios.get("https://restcountries.eu/rest/v2/all");
         const weather = await axios.get(` http://api.weatherstack.com/current?access_key=${api_key}&query=${query}`);
-
+        
+        console.log("apiKey", api_key);
         console.log("fetched data", res.data);
         setCountries(res.data);
         setWeather(weather.data);
