@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
 import Filter from "./components/Filter";
-import axios from "axios";
+import {getPersons, createPerson, updatePerson} from './services/persons'
 
 const Header = ({ text }) =>
   text === "Phonebook" ? <h2>{text}</h2> : <h3>{text}</h3>;
@@ -14,17 +14,13 @@ const App = () => {
   const [searchText, setSearchText] = useState("");
 
   useEffect(() => {
-    const getPersons = async () => {
-      try {
-        const res = await axios.get("http://localhost:3001/persons");
-        console.log("fetched persons", res.data);
-        setPersons(res.data);
-        console.log("res", res);
-      } catch (e) {
-        console.error(e.message);
-      }
-    };
-    getPersons();
+    getPersons()
+    .then( initPersons => {
+      setPersons(initPersons)
+      console.log("fetched persons", initPersons)
+    })
+    .catch( e => console.log('fetch error', e.message)
+    )
   }, []);
 
   const addPerson = (e) => {
@@ -47,11 +43,14 @@ const App = () => {
         )
       : isEmpty
       ? alert("Enter required field!")
-      : setPersons(persons.concat(newPerson));
-
-    setNewName("");
-    setNewNumber("");
-    console.log("persons", persons);
+      : createPerson(newPerson)
+      .then( res => {
+        setPersons( persons.concat(res))
+        setNewName("");
+        setNewNumber("");
+        console.log("posted person", res);
+      }).catch(e => console.error('post error', e.message)
+      )
   };
 
   const handleNameChange = (e) => {
@@ -82,7 +81,6 @@ const App = () => {
       .split(" ")
       .map((text) => text[0].toUpperCase() + text.slice(1))
       .join(" ");
-    console.log("Name", cap);
     return cap;
   };
 
@@ -93,7 +91,6 @@ const App = () => {
     newName,
     newNumber,
   ];
-  console.log('persons before effect', persons.length);
   
   return (
     <div>
