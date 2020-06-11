@@ -43,19 +43,35 @@ const App = () => {
       number: newNumber,
     };
 
-    const isPresent = persons.some(
+    const personByName = persons.find(
       (p) => p.name.toLowerCase() === newPerson.name.toLowerCase()
     );
 
-    const isEmpty = newName.length === 0 || newNumber.length === 0;
-    console.log("duplicated", isPresent);
+    const updateContactNumber = (id) => {
+      const changedNumber = { ...personByName, number: newNumber };
 
-    isPresent
-      ? alert(
-          `'${capitalizeName(newName)}' already exists, enter a different name!`
-        )
-      : isEmpty
-      ? alert("Enter required field!")
+      window.confirm(
+        `'${capitalizeName(
+          newName
+        )}' already exists in phonebook. Do you want to replace the old number with a new one?`
+      )
+        ? updatePerson(id, changedNumber)
+            .then((updatedContact) => {
+              setPersons(
+                persons.map((p) => (p.id !== id ? p : updatedContact))
+              );
+              setNewName("");
+              setNewNumber("");
+              console.log("updated", updatedContact);
+            })
+            .catch((e) => {
+              console.log("error updating number", e);
+            })
+        : setNewName("");
+    };
+
+    personByName
+      ? updateContactNumber(personByName.id)
       : createPerson(newPerson)
           .then((res) => {
             setPersons(persons.concat(res));
@@ -73,7 +89,10 @@ const App = () => {
       ? deletePerson(id)
           .then((res) => {
             setPersons(persons.filter((p) => p.id !== person.id));
-            console.log("delete status", `${res.statusText}  ${res.status} ${res.data}`);
+            console.log(
+              "delete status",
+              `${res.statusText}  ${res.status} ${res.data}`
+            );
           })
           .catch((e) => console.log("error", e))
       : console.log("delete request cancelled");
