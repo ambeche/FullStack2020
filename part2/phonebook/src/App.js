@@ -2,7 +2,12 @@ import React, { useState, useEffect } from "react";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
 import Filter from "./components/Filter";
-import {getPersons, createPerson, updatePerson} from './services/persons'
+import {
+  getPersons,
+  createPerson,
+  updatePerson,
+  deletePerson,
+} from "./services/persons";
 
 const Header = ({ text }) =>
   text === "Phonebook" ? <h2>{text}</h2> : <h3>{text}</h3>;
@@ -15,13 +20,21 @@ const App = () => {
 
   useEffect(() => {
     getPersons()
-    .then( initPersons => {
-      setPersons(initPersons)
-      console.log("fetched persons", initPersons)
-    })
-    .catch( e => console.log('fetch error', e.message)
-    )
+      .then((initPersons) => {
+        setPersons(initPersons);
+        console.log("fetched persons", initPersons);
+      })
+      .catch((e) => console.log("fetch error", e.message));
   }, []);
+
+  const capitalizeName = (str) => {
+    const cap = str
+      .trim()
+      .split(" ")
+      .map((text) => text[0].toUpperCase() + text.slice(1))
+      .join(" ");
+    return cap;
+  };
 
   const addPerson = (e) => {
     e.preventDefault();
@@ -44,13 +57,26 @@ const App = () => {
       : isEmpty
       ? alert("Enter required field!")
       : createPerson(newPerson)
-      .then( res => {
-        setPersons( persons.concat(res))
-        setNewName("");
-        setNewNumber("");
-        console.log("posted person", res);
-      }).catch(e => console.error('post error', e.message)
-      )
+          .then((res) => {
+            setPersons(persons.concat(res));
+            setNewName("");
+            setNewNumber("");
+            console.log("posted person", res);
+          })
+          .catch((e) => console.error("post error", e.message));
+  };
+
+  const handleDelete = (id) => () => {
+    const person = persons.find((p) => p.id === id);
+
+    window.confirm(`Delete ${capitalizeName(person.name)}?`)
+      ? deletePerson(id)
+          .then((res) => {
+            setPersons(persons.filter((p) => p.id !== person.id));
+            console.log("delete status", `${res.statusText}  ${res.status} ${res.data}`);
+          })
+          .catch((e) => console.log("error", e))
+      : console.log("delete request cancelled");
   };
 
   const handleNameChange = (e) => {
@@ -75,15 +101,6 @@ const App = () => {
         )
       : persons;
 
-  const capitalizeName = (str) => {
-    const cap = str
-      .trim()
-      .split(" ")
-      .map((text) => text[0].toUpperCase() + text.slice(1))
-      .join(" ");
-    return cap;
-  };
-
   const handlers = [
     addPerson,
     handleNameChange,
@@ -91,7 +108,7 @@ const App = () => {
     newName,
     newNumber,
   ];
-  
+
   return (
     <div>
       <Header text="Phonebook" />
@@ -99,7 +116,11 @@ const App = () => {
       <Header text="Add New Contact" />
       <PersonForm handlers={handlers} />
       <Header text="Numbers" />
-      <Persons lstToDisplay={lstToDisplay} capitalizeName={capitalizeName} />
+      <Persons
+        lstToDisplay={lstToDisplay}
+        capitalizeName={capitalizeName}
+        handleDelete={handleDelete}
+      />
     </div>
   );
 };

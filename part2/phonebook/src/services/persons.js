@@ -18,4 +18,10 @@ const updatePerson = (id, newPerson) => {
       .then( res => res.data);
   };
 
-export {getPersons, createPerson, updatePerson}
+  const deletePerson = (id) => {
+    return axios
+      .delete(`${baseUrl}/${id}`)
+      //.then( res => res.data);
+  };
+
+export {getPersons, createPerson, updatePerson, deletePerson}
