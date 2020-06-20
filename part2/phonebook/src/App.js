@@ -45,6 +45,18 @@ const App = () => {
     }, 5000);
   };
 
+  const errorHandler = (err) => {
+    console.log("error", err.response.data);
+
+    const newNotice = {
+      ...notice,
+      message: err.response.data.error,
+      code: 0,
+    };
+
+    notifyUser(newNotice);
+  };
+
   const addPerson = (e) => {
     e.preventDefault();
     const newPerson = {
@@ -81,15 +93,7 @@ const App = () => {
               notifyUser(newNotice);
               console.log("updated", updatedContact);
             })
-            .catch((e) => {
-              const newNotice = {
-                ...notice,
-                message: `'${personByName.name}'s' contact number was not modified!`,
-                code: 0,
-              };
-              notifyUser(newNotice);
-              console.log("error updating contact", e);
-            })
+            .catch((err) => errorHandler(err))
         : setNewName("");
     };
 
@@ -110,15 +114,7 @@ const App = () => {
             notifyUser(noticObject);
             console.log("posted person", res);
           })
-          .catch((e) => {
-            const newNotice = {
-              ...notice,
-              message: `Sorry '${personByName.name}' was not added to server!`,
-              code: 0,
-            };
-            notifyUser(newNotice);
-            console.log("posting error", e);
-          })
+          .catch((err) => errorHandler(err));
   };
 
   const handleDelete = (id) => () => {
