@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Blog from "./components/Blog";
+import Notification from "./components/Notification";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 
@@ -11,6 +12,7 @@ const App = () => {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
+  const [noticeToUser, setNoticeToUser] = useState(null)
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -25,6 +27,11 @@ const App = () => {
     }
   }, []);
 
+  const alertUser = async (newMessage, newCode) => {
+    setNoticeToUser({ message: newMessage, code: newCode })
+    await setTimeout(() => setNoticeToUser(null), 5000)
+  }
+
   const handleLogin = async (event) => {
     event.preventDefault();
     try {
@@ -37,7 +44,8 @@ const App = () => {
       setUsername("");
       setPassword("");
     } catch (err) {
-      console.log("login error", err.message);
+      console.log("login error", err.response.data.error);
+      await alertUser('Wrong password or username!', 0)
     }
   };
 
@@ -51,18 +59,20 @@ const App = () => {
     try {
       const createdBlog = await blogService.createBlog({title, author, url})
       setBlogs(blogs.concat(createdBlog))
+      await alertUser(`A new blog '${createdBlog.title}' has been added!`, 1)
       setTitle('')
       setAuthor('')
       setUrl('')
     } catch (err) {
-      console.log('blog creation failed', err.message);
-      
+      console.log('blog creation failed', err.response.data.error);
+      await alertUser(`${err.response.data.error}!`, 0)
     }
   }
 
   if (user === null) {
     return (
       <div>
+        <Notification noticeToUser={noticeToUser} />
         <h2>Log in to application</h2>
         <form onSubmit={handleLogin}>
           <div>
@@ -97,6 +107,7 @@ const App = () => {
 
   return (
     <div>
+      <Notification noticeToUser={noticeToUser} />
       <h2>blogs</h2>
       <p>
         {user.name} is logged in
