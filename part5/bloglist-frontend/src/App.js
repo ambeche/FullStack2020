@@ -1,4 +1,4 @@
-import React, { useState, useEffect , useRef} from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Blog from "./components/Blog";
 import BlogForm from "./components/BlogForm";
 import LoginForm from "./components/LoginForm";
@@ -11,7 +11,7 @@ const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [user, setUser] = useState(null);
   const [noticeToUser, setNoticeToUser] = useState(null);
-  const blogFormRef = useRef()
+  const blogFormRef = useRef();
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -52,12 +52,29 @@ const App = () => {
 
   const handleBlogCreation = async (newBlog) => {
     try {
-      blogFormRef.current.toggleVisibility()
+      blogFormRef.current.toggleVisibility();
       const createdBlog = await blogService.createBlog(newBlog);
       setBlogs(blogs.concat(createdBlog));
       await alertUser(`A new blog '${createdBlog.title}' has been added!`, 1);
     } catch (err) {
       console.log("blog creation failed", err.response.data.error);
+      await alertUser(`${err.response.data.error}!`, 0);
+    }
+  };
+
+  const modifyBlog = async (newBlog) => {
+    try {
+      const updatedBlog = await blogService.updateBlog({
+        ...newBlog,
+        likes: (newBlog.likes += 1)
+      });
+      setBlogs(
+        blogs
+          .map((b) => b.likes === newBlog.likes && b.title === newBlog.title ? updatedBlog : b)
+      );
+      await alertUser(`Thanks for liking the post, '${updatedBlog.title}'!`, 1);
+    } catch (err) {
+      console.log("failed to update", err.response.data.error);
       await alertUser(`${err.response.data.error}!`, 0);
     }
   };
@@ -79,12 +96,15 @@ const App = () => {
         {user.name} is logged in
         <button onClick={handleLogout}>Logout</button>
       </p>
-      <ToggleVisibility ref={blogFormRef} labelOne='cancel' labelTwo='create blog'>
-        <BlogForm addBlock={handleBlogCreation} />
+      <ToggleVisibility
+        ref={blogFormRef}
+        labelOne="cancel"
+        labelTwo="create blog"
+      >
+        <BlogForm addBlog={handleBlogCreation} />
       </ToggleVisibility>
       {blogs.map((blog) => (
-        
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} modifyBlog={modifyBlog} />
       ))}
     </div>
   );

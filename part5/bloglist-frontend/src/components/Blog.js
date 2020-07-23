@@ -1,7 +1,7 @@
 import React from "react";
 import ToggleVisibility from './ToggleVisibility'
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, modifyBlog }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -10,6 +10,8 @@ const Blog = ({ blog }) => {
     marginBottom: 5
   }
 
+  const likeBlog = () => modifyBlog(blog)
+
   return (
     <div style={blogStyle}>
       <div>
@@ -17,10 +19,9 @@ const Blog = ({ blog }) => {
       </div>
       <ToggleVisibility labelOne='hide' labelTwo='view'>
       <div> {blog.url}</div>
-      
       <div>
         likes {blog.likes}
-        <button>like</button>
+        <button onClick={likeBlog}>like</button>
       </div>
       <div> {blog.author}</div>
       </ToggleVisibility>
