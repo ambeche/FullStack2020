@@ -26,6 +26,8 @@ const App = () => {
     }
   }, []);
 
+  const sortedBlogs = blogs.concat().sort((a, b) => a.likes - b.likes);
+
   const alertUser = async (newMessage, newCode) => {
     setNoticeToUser({ message: newMessage, code: newCode });
     await setTimeout(() => setNoticeToUser(null), 5000);
@@ -66,11 +68,14 @@ const App = () => {
     try {
       const updatedBlog = await blogService.updateBlog({
         ...newBlog,
-        likes: (newBlog.likes += 1)
+        likes: (newBlog.likes += 1),
       });
       setBlogs(
-        blogs
-          .map((b) => b.likes === newBlog.likes && b.title === newBlog.title ? updatedBlog : b)
+        blogs.map((b) =>
+          b.likes === newBlog.likes && b.title === newBlog.title
+            ? updatedBlog
+            : b
+        )
       );
       await alertUser(`Thanks for liking the post, '${updatedBlog.title}'!`, 1);
     } catch (err) {
@@ -103,7 +108,7 @@ const App = () => {
       >
         <BlogForm addBlog={handleBlogCreation} />
       </ToggleVisibility>
-      {blogs.map((blog) => (
+      {sortedBlogs.map((blog) => (
         <Blog key={blog.id} blog={blog} modifyBlog={modifyBlog} />
       ))}
     </div>
