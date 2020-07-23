@@ -13,12 +13,10 @@ const ToggleVisibility = React.forwardRef((props, ref) => {
   )
 
   return (
-    <>
-      <div style={hideOrShow}> {props.children} </div>
-      <div>
+    <div>
+        <div style={hideOrShow}> {props.children} </div>
         <button onClick={toggleVisibility}> {label} </button>
-      </div>
-    </>
+    </div>
   );
 });
 
