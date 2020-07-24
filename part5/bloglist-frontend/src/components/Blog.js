@@ -2,7 +2,7 @@ import React from "react";
 import ToggleVisibility from "./ToggleVisibility";
 import Button from "./Button";
 
-const Blog = ({ blog, modifyBlog, handleBlogDeletion }) => {
+const Blog = ({ blog, loggedUser, modifyBlog, handleBlogDeletion }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -12,7 +12,19 @@ const Blog = ({ blog, modifyBlog, handleBlogDeletion }) => {
   };
 
   const likeBlog = () => modifyBlog(blog);
-  const deleteBlog = () => handleBlogDeletion(blog);
+  
+  const handleDeletion = () => 
+    window.confirm(`Remove blog '${blog.title}' by ${blog.author}`)
+      ? handleBlogDeletion(blog.id)
+      : null;
+
+  const toggleDeleteButton = () => {
+    if (blog.user.username === loggedUser) {
+      return (
+        <Button handleClick={handleDeletion} label="delete" color="#f44336" />
+      );
+    }
+  };
 
   return (
     <div style={blogStyle}>
@@ -23,10 +35,10 @@ const Blog = ({ blog, modifyBlog, handleBlogDeletion }) => {
         <div> {blog.url}</div>
         <div>
           likes {blog.likes}
-          <Button handleClick={likeBlog} label="like" color="green" />
+          <Button handleClick={likeBlog} label="&#10003;" color="green" />
         </div>
         <div> {blog.author}</div>
-        <Button handleClick={deleteBlog} label="delete" color="#f44336" />
+        {toggleDeleteButton()}
       </ToggleVisibility>
     </div>
   );

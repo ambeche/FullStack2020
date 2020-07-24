@@ -22,5 +22,4 @@ const Notification = ({ noticeToUser }) => {
   
 }
 
-
 export default Notification

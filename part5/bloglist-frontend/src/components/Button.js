@@ -2,12 +2,13 @@ import React from "react";
 
 const Button = ({ marginBottom, color, label, handleClick }) => {
   const buttonStyle = {
-    padding: 2,
+    fontSize: label === '&#10003;' ? '20px' : '15px',
     borderRadius: 6,
-    display: 'inline',
+    borderColor: 'white',
     backgroundColor: color,
+    textDecoration: 'none',
     color: '#ffffff',
-    marginBottom: marginBottom
+    marginBottom: marginBottom,
   }
   return (
     <>

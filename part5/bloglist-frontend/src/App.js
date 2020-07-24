@@ -5,6 +5,7 @@ import LoginForm from "./components/LoginForm";
 import Notification from "./components/Notification";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
+import userService from './services/users'
 import ToggleVisibility from "./components/ToggleVisibility";
 import Button from "./components/Button";
 
@@ -56,12 +57,16 @@ const App = () => {
   const handleBlogCreation = async (newBlog) => {
     try {
       blogFormRef.current.toggleVisibility();
+
       const createdBlog = await blogService.createBlog(newBlog);
+      const blogCreator = await userService.getUser(createdBlog.user)
+
+      createdBlog.user = blogCreator //populates user field of created blog with the creator's details
       setBlogs(blogs.concat(createdBlog));
       await alertUser(`A new blog '${createdBlog.title}' has been added!`, 1);
     } catch (err) {
       console.log("blog creation failed", err.response.data.error);
-      await alertUser(`${err.response.data.error}!`, 0);
+      await alertUser(`${err.response.data.error}`, 0);
     }
   };
 
@@ -84,6 +89,21 @@ const App = () => {
       await alertUser(`Thanks for liking the post, '${updatedBlog.title}'!`, 1);
     } catch (err) {
       console.error("error", err.message);
+    }
+  };
+
+  const handleBlogDeletion = async (id) => {
+    try {
+      const removed = (await blogService.deleteBlog(id))
+        console.log('res', removed);
+        
+      if (removed.status === 204) {
+        setBlogs(blogs.filter((b) => b.id !== id))
+        await alertUser(`Blog deletion successful'!`, 1);
+      }
+    } catch (err) {
+      console.error("error", err);
+      await alertUser(`Deletion failed: ${err.response.data.error}'!`, 1);
     }
   };
 
@@ -112,7 +132,13 @@ const App = () => {
         <BlogForm addBlog={handleBlogCreation} />
       </ToggleVisibility>
       {sortedBlogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} modifyBlog={modifyBlog} />
+        <Blog
+          key={blog.id}
+          blog={blog}
+          loggedUser={user.username}
+          handleBlogDeletion={handleBlogDeletion}
+          modifyBlog={modifyBlog}
+        />
       ))}
     </div>
   );
