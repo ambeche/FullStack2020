@@ -6,6 +6,7 @@ import Notification from "./components/Notification";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 import ToggleVisibility from "./components/ToggleVisibility";
+import Button from "./components/Button";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -66,21 +67,23 @@ const App = () => {
 
   const modifyBlog = async (newBlog) => {
     try {
-      const updatedBlog = await blogService.updateBlog({
-        ...newBlog,
+      const toBeUpdated = {
+        user: newBlog.user.id,
+        title: newBlog.title,
+        author: newBlog.author,
         likes: (newBlog.likes += 1),
-      });
+      };
+      const updatedBlog = await blogService.updateBlog(toBeUpdated, newBlog.id);
       setBlogs(
         blogs.map((b) =>
-          b.likes === newBlog.likes && b.title === newBlog.title
-            ? updatedBlog
-            : b
+          b.id !== newBlog.id
+            ? b
+            : { ...updatedBlog, user: (updatedBlog.user = newBlog.user) }
         )
       );
       await alertUser(`Thanks for liking the post, '${updatedBlog.title}'!`, 1);
     } catch (err) {
-      console.log("failed to update", err.response.data.error);
-      await alertUser(`${err.response.data.error}!`, 0);
+      console.error("error", err.message);
     }
   };
 
@@ -99,7 +102,7 @@ const App = () => {
       <h2>blogs</h2>
       <p>
         {user.name} is logged in
-        <button onClick={handleLogout}>Logout</button>
+        <Button handleClick={handleLogout} label="logout" color="grey" />
       </p>
       <ToggleVisibility
         ref={blogFormRef}

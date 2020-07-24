@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Button from './Button'
 
 const BlogForm = ({ addBlog }) => {
   const [title, setTitle] = useState("");
@@ -19,7 +20,7 @@ const BlogForm = ({ addBlog }) => {
   };
 
   return (
-    <div>
+    <div style={{marginBottom:5}}>
       <h2>Create New Blog</h2>
       <form onSubmit={handleBlogCreation}>
         <div>
@@ -58,7 +59,7 @@ const BlogForm = ({ addBlog }) => {
             />
           </label>
         </div>
-        <button type="submit">Create</button>
+        <Button label='create' color= 'green' />
       </form>
     </div>
   );

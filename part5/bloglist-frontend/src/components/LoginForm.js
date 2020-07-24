@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Button from './Button'
 
 const LoginForm = ({ login }) => {
   const [username, setUsername] = useState("");
@@ -42,7 +43,7 @@ const LoginForm = ({ login }) => {
             />
           </label>
         </div>
-        <button>Login</button>
+        <Button label='log in' color='green'/>
       </form>
     </>
   );
