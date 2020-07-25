@@ -1,30 +1,31 @@
-import React from "react";
-import ToggleVisibility from "./ToggleVisibility";
-import Button from "./Button";
+import React from 'react'
+import ToggleVisibility from './ToggleVisibility'
+import Button from './Button'
+import PropTypes from 'prop-types'
 
 const Blog = ({ blog, loggedUser, modifyBlog, handleBlogDeletion }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
-    border: "solid",
+    border: 'solid',
     borderWidth: 1,
     marginBottom: 5,
-  };
+  }
 
-  const likeBlog = () => modifyBlog(blog);
-  
-  const handleDeletion = () => 
+  const likeBlog = () => modifyBlog(blog)
+
+  const handleDeletion = () =>
     window.confirm(`Remove blog '${blog.title}' by ${blog.author}`)
       ? handleBlogDeletion(blog.id)
-      : null;
+      : null
 
   const toggleDeleteButton = () => {
     if (blog.user.username === loggedUser) {
       return (
         <Button handleClick={handleDeletion} label="delete" color="#f44336" />
-      );
+      )
     }
-  };
+  }
 
   return (
     <div style={blogStyle}>
@@ -41,7 +42,14 @@ const Blog = ({ blog, loggedUser, modifyBlog, handleBlogDeletion }) => {
         {toggleDeleteButton()}
       </ToggleVisibility>
     </div>
-  );
-};
+  )
+}
 
-export default Blog;
+Blog.propTypes = {
+  blog: PropTypes.object.isRequired,
+  loggedUser: PropTypes.string.isRequired,
+  modifyBlog: PropTypes.func.isRequired,
+  handleBlogDeletion: PropTypes.func.isRequired,
+}
+
+export default Blog

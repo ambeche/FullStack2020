@@ -1,26 +1,27 @@
-import React, { useState } from "react";
+import React, { useState } from 'react'
 import Button from './Button'
+import PropTypes from 'prop-types'
 
 const BlogForm = ({ addBlog }) => {
-  const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
-  const [url, setUrl] = useState("");
+  const [title, setTitle] = useState('')
+  const [author, setAuthor] = useState('')
+  const [url, setUrl] = useState('')
 
-  const handleTitleChange = ({target}) => setTitle(target.value);
-  const handleAuthorChange = ({target}) => setAuthor(target.value);
-  const handleUrlChange = ({target}) => setUrl(target.value);
+  const handleTitleChange = ({ target }) => setTitle(target.value)
+  const handleAuthorChange = ({ target }) => setAuthor(target.value)
+  const handleUrlChange = ({ target }) => setUrl(target.value)
 
   const handleBlogCreation = (event) => {
-    event.preventDefault();
-    addBlog({title, author, url})
+    event.preventDefault()
+    addBlog({ title, author, url })
 
-    setTitle("");
-    setAuthor("");
-    setUrl("");
-  };
+    setTitle('')
+    setAuthor('')
+    setUrl('')
+  }
 
   return (
-    <div style={{marginBottom:5}}>
+    <div style={{ marginBottom:5 }}>
       <h2>Create New Blog</h2>
       <form onSubmit={handleBlogCreation}>
         <div>
@@ -62,7 +63,11 @@ const BlogForm = ({ addBlog }) => {
         <Button label='create' color= 'green' />
       </form>
     </div>
-  );
-};
+  )
+}
 
-export default BlogForm;
+BlogForm.propTypes = {
+  addBlog: PropTypes.func.isRequired,
+}
+
+export default BlogForm

@@ -1,19 +1,19 @@
-import React, { useState } from "react";
+import React, { useState } from 'react'
 import Button from './Button'
 
 const LoginForm = ({ login }) => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
 
-  const handleUsernameChange = ({ target }) => setUsername(target.value);
-  const handlePasswordChange = ({ target }) => setPassword(target.value);
+  const handleUsernameChange = ({ target }) => setUsername(target.value)
+  const handlePasswordChange = ({ target }) => setPassword(target.value)
 
   const handleLogin = (event) => {
-    event.preventDefault();
-    login({ username, password });
-    setUsername("");
-    setPassword("");
-  };
+    event.preventDefault()
+    login({ username, password })
+    setUsername('')
+    setPassword('')
+  }
 
   return (
     <>
@@ -46,7 +46,7 @@ const LoginForm = ({ login }) => {
         <Button label='log in' color='green'/>
       </form>
     </>
-  );
-};
+  )
+}
 
-export default LoginForm;
+export default LoginForm

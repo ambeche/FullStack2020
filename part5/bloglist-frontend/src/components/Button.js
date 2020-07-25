@@ -1,4 +1,5 @@
-import React from "react";
+import React from 'react'
+import PropTypes from 'prop-types'
 
 const Button = ({ marginBottom, color, label, handleClick }) => {
   const buttonStyle = {
@@ -16,7 +17,13 @@ const Button = ({ marginBottom, color, label, handleClick }) => {
         {label}
       </button>
     </>
-  );
-};
+  )
+}
 
+Button.propTypes = {
+  label: PropTypes.string.isRequired,
+  handleClick: PropTypes.func,
+  color: PropTypes.string,
+  marginBottom: PropTypes.number, 
+}
 export default Button
