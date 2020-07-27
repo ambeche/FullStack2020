@@ -54,7 +54,7 @@ const BlogForm = ({ addBlog }) => {
             <input
               onChange={handleUrlChange}
               value={url}
-              type="text"
+              type="url"
               name="url"
               autoComplete="url"
             />

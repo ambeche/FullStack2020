@@ -13,7 +13,7 @@ const ToggleVisibility = React.forwardRef((props, ref) => {
 
   return (
     <div>
-      <div style={hideOrShow}> {props.children} </div>
+      <div style={hideOrShow} className='hideOrShow'> {props.children} </div>
       <Button handleClick={toggleVisibility} label={label} color={visible ? 'orange' : '#008CBA'} marginBottom={10} />
     </div>
   )
