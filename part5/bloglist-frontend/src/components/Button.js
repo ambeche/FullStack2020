@@ -24,6 +24,6 @@ Button.propTypes = {
   label: PropTypes.string.isRequired,
   handleClick: PropTypes.func,
   color: PropTypes.string,
-  marginBottom: PropTypes.number, 
+  marginBottom: PropTypes.number,
 }
 export default Button
