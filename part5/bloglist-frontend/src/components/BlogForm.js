@@ -60,7 +60,7 @@ const BlogForm = ({ addBlog }) => {
             />
           </label>
         </div>
-        <Button label='create' color= 'green' />
+        <Button label='create' color= 'green' id='post-blog' />
       </form>
     </div>
   )

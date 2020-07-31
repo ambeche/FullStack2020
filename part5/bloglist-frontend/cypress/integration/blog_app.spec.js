@@ -21,7 +21,7 @@ describe('Blog app', function () {
     it('succeeds with correct credentials', function () {
       cy.get('input[name=username]').type('tamanji')
       cy.get('input[name=password]').type('blogApp')
-      cy.get('button').should('contain', 'log in').click()
+      cy.contains('log in').click()
 
       cy.contains('Tamanji Che is logged in')
     })
@@ -29,7 +29,7 @@ describe('Blog app', function () {
     it('fails with wrong credentials', function () {
       cy.get('input[name=username]').type('tamanji')
       cy.get('input[name=password]').type('wrong password')
-      cy.get('button').should('contain', 'log in').click()
+      cy.contains('log in').click()
 
       cy.get('.notice')
         .should('contain', 'Wrong password or username')
@@ -37,6 +37,22 @@ describe('Blog app', function () {
         .and('have.css', 'background-color', 'rgb(240, 240, 240)')
 
       cy.get('html').should('not.contain', 'Tamanji Che is logged in')
+    })
+  })
+
+  describe.only('When logged in', function() {
+    beforeEach(function() {
+      cy.login({ username: 'tamanji', password: 'blogApp' })
+    })
+
+    it('A blog can be created', function() {
+      cy.contains('create blog').click()
+      cy.get('input[name=title]').type('Learning end-to-end testing with cypress')
+      cy.get('input[name=author]').type('Tamanji Che')
+      cy.get('input[name=url]').type('https://github.com/ambeche/FullStack2020/tree/master/part5/bloglist-frontend')
+      cy.get('#post-blog').click()
+
+      cy.get('.blogs').contains('Learning end-to-end testing with cypress')
     })
   })
 })
