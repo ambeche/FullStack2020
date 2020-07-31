@@ -32,7 +32,7 @@ const Blog = ({ blog, loggedUser, modifyBlog, handleBlogDeletion }) => {
       <div>
         {blog.title} {blog.author}
       </div>
-      <ToggleVisibility labelOne="hide" labelTwo="view" id="toggle">
+      <ToggleVisibility labelOne="hide" labelTwo="view" className="toggle">
         <div> {blog.url}</div>
         <div>
             likes {blog.likes}

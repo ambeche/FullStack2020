@@ -28,7 +28,7 @@ const App = () => {
     }
   }, [])
 
-  const sortedBlogs = blogs.concat().sort((a, b) => a.likes - b.likes)
+  const sortedBlogs = blogs.concat().sort((a, b) => a.likes - b.likes).reverse()
 
   const alertUser = async (newMessage, newCode) => {
     setNoticeToUser({ message: newMessage, code: newCode })

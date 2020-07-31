@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-const Button = ({ marginBottom, color, label, id, handleClick }) => {
+const Button = ({ marginBottom, color, label, id, className, handleClick }) => {
   const buttonStyle = {
     fontSize: label === '&#10003;' ? '20px' : '15px',
     borderRadius: 6,
@@ -13,7 +13,7 @@ const Button = ({ marginBottom, color, label, id, handleClick }) => {
   }
   return (
     <>
-      <button style={buttonStyle} onClick={handleClick} id={id}>
+      <button style={buttonStyle} onClick={handleClick} id={id} className={className}>
         {label}
       </button>
     </>
