@@ -40,7 +40,7 @@ describe('Blog app', function () {
     })
   })
 
-  describe.only('When logged in', function() {
+  describe('When logged in', function() {
     beforeEach(function() {
       cy.login({ username: 'tamanji', password: 'blogApp' })
     })
@@ -53,6 +53,23 @@ describe('Blog app', function () {
       cy.get('#post-blog').click()
 
       cy.get('.blogs').contains('Learning end-to-end testing with cypress')
+    })
+
+    describe('and some blogs already exist', function() {
+      beforeEach(function() {
+        cy.postBlog({ title: 'end to end testing', author: 'Tamanji Che', url: 'http://localhost:3003/phonebook' })
+        cy.postBlog({ title: 'redux with react', author: 'Moffi Ebite', url: 'http://localhost:3003/redux' })
+      })
+  
+      it('A blog can be liked', function() {
+        cy.contains('redux with react').parent().as('parentDiv')
+        cy.get('@parentDiv').find('#toggle').click()
+        cy.get('@parentDiv').should('contain', 'likes 0')
+
+        cy.get('@parentDiv').find('#like-blog').dblclick()
+        
+        cy.get('@parentDiv').should('contain', 'likes 2')
+      })
     })
   })
 })

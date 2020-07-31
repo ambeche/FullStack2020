@@ -22,7 +22,7 @@ const Blog = ({ blog, loggedUser, modifyBlog, handleBlogDeletion }) => {
   const toggleDeleteButton = () => {
     if (blog.user.username === loggedUser) {
       return (
-        <Button handleClick={handleDeletion} label="delete" color="#f44336" />
+        <Button handleClick={handleDeletion} label="delete" id="delete-blog" color="#f44336" />
       )
     }
   }
@@ -32,11 +32,11 @@ const Blog = ({ blog, loggedUser, modifyBlog, handleBlogDeletion }) => {
       <div>
         {blog.title} {blog.author}
       </div>
-      <ToggleVisibility labelOne="hide" labelTwo="view">
+      <ToggleVisibility labelOne="hide" labelTwo="view" id="toggle">
         <div> {blog.url}</div>
         <div>
             likes {blog.likes}
-          <Button handleClick={likeBlog} label="like" color="green" />
+          <Button handleClick={likeBlog} label="like" color="green" id="like-blog"/>
         </div>
         <div> {blog.author}</div>
         {toggleDeleteButton()}

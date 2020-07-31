@@ -14,7 +14,7 @@ const ToggleVisibility = React.forwardRef((props, ref) => {
   return (
     <div>
       <div style={hideOrShow} className='hideOrShow'> {props.children} </div>
-      <Button handleClick={toggleVisibility} label={label} color={visible ? 'orange' : '#008CBA'} marginBottom={10} />
+      <Button handleClick={toggleVisibility} label={label} id={props.id} color={visible ? 'orange' : '#008CBA'} marginBottom={10} />
     </div>
   )
 })
@@ -24,6 +24,7 @@ ToggleVisibility.displayName = 'ToggleVisibility'
 ToggleVisibility.propTypes = {
   labelOne: PropTypes.string.isRequired,
   labelTwo: PropTypes.string.isRequired,
+  id: PropTypes.string,
 }
 
 
