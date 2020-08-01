@@ -35,7 +35,7 @@ const Blog = ({ blog, loggedUser, modifyBlog, handleBlogDeletion }) => {
       <ToggleVisibility labelOne="hide" labelTwo="view" className="toggle">
         <div> {blog.url}</div>
         <div>
-            likes {blog.likes}
+            likes <span id="num-of-likes">{blog.likes}</span>
           <Button handleClick={likeBlog} label="like" color="green" id="like-blog"/>
         </div>
         <div> {blog.author}</div>
