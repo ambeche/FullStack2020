@@ -1,3 +1,5 @@
+const { node } = require('prop-types')
+
 Cypress.Commands.add('login', ({ username, password }) => {
   cy.request('POST', 'http://localhost:3007/api/login', {
     username,
@@ -14,8 +16,10 @@ Cypress.Commands.add('postBlog', ({ title, author, url }) => {
     method: 'POST',
     body: { title, author, url },
     headers: {
-      'Authorization': `bearer ${JSON.parse(localStorage.getItem('loggedInUser')).token}`
-    }
+      Authorization: `bearer ${
+        JSON.parse(localStorage.getItem('loggedInUser')).token
+      }`,
+    },
   })
 
   cy.visit('http://localhost:3000')
@@ -27,4 +31,8 @@ Cypress.Commands.add('createUser', ({ username, name, password }) => {
     name,
     password,
   })
+})
+
+Cypress.Commands.add('getText', ({ node, element, alias }) => {
+  cy.wrap(node).find(element).invoke('text').as(alias)
 })

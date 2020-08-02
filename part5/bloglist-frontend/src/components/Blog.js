@@ -29,11 +29,11 @@ const Blog = ({ blog, loggedUser, modifyBlog, handleBlogDeletion }) => {
 
   return (
     <div className="blogs" style={blogStyle}>
-      <div>
+      <div className="blog-title">
         {blog.title} {blog.author}
       </div>
       <ToggleVisibility labelOne="hide" labelTwo="view" className="toggle">
-        <div> {blog.url}</div>
+        <div className="blog-url"> {blog.url}</div>
         <div>
             likes <span id="num-of-likes">{blog.likes}</span>
           <Button handleClick={likeBlog} label="like" color="green" id="like-blog"/>

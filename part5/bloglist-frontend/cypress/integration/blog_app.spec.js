@@ -1,7 +1,11 @@
 describe('Blog app', function () {
   beforeEach(function () {
     cy.request('POST', 'http://localhost:3007/api/testing/reset')
-    cy.createUser({ username: 'tamanji', name: 'Tamanji Che', password: 'blogApp' })
+    cy.createUser({
+      username: 'tamanji',
+      name: 'Tamanji Che',
+      password: 'blogApp',
+    })
     cy.visit('http://localhost:3000')
   })
 
@@ -72,26 +76,32 @@ describe('Blog app', function () {
           author: 'Tamanji Che',
           url: 'https://restaux.herokuapp.com',
         })
-        
+
         cy.get('.toggle').should('contain', 'view').click({ multiple: true }) // toggles details view of blogs
       })
 
       it('A blog can be liked', function () {
         cy.contains('redux with react').parent().as('parentDiv')
 
-        cy.get('@parentDiv').find('#num-of-likes')
-        .then(likes => {
-          const likesBeforeClick = parseFloat(likes.text())
+        cy.get('@parentDiv')
+          .find('#num-of-likes')
+          .then((likes) => {
+            const likesBeforeClick = parseFloat(likes.text())
 
-          cy.get("@parentDiv").find("#like-blog").click()
-            .then( () => {
-              const likesAfterClick = parseFloat(likes.text())
+            cy.get('@parentDiv')
+              .find('#like-blog')
+              .click()
+              .then(() => {
+                const likesAfterClick = parseFloat(likes.text())
 
-              expect(likesAfterClick).to.eq(likesBeforeClick + 1)
-            })
-        })
-        
-        cy.get("@parentDiv").should("contain", "likes 1")
+                expect(likesAfterClick).to.eq(likesBeforeClick + 1)
+              })
+          })
+
+        cy.get('@parentDiv').should('contain', 'likes 1')
+        cy.get('.notice')
+          .should('contain', 'Thanks for liking the post, \'redux with react\'!')
+          .and('have.css', 'color', 'rgb(0, 128, 0)')
       })
 
       describe('a blog can be deleted', function () {
@@ -111,9 +121,15 @@ describe('Blog app', function () {
 
         describe('a new user cannot delete another users blog', function () {
           beforeEach(function () {
-            cy.createUser({ username: 'userCannotDelete', name: 'User Owns Zero Blog', password: 'zeroBlog' })
+            cy.createUser({
+              username: 'userCannotDelete',
+              name: 'User Owns Zero Blog',
+              password: 'zeroBlog',
+            })
             cy.login({ username: 'userCannotDelete', password: 'zeroBlog' })
-            cy.get('.toggle').should('contain', 'view').click({ multiple: true })
+            cy.get('.toggle')
+              .should('contain', 'view')
+              .click({ multiple: true })
           })
 
           it('delete button is invinsible to an unauthorized user', function () {
@@ -123,6 +139,75 @@ describe('Blog app', function () {
 
             cy.get('button').should('not.contain', 'delete')
             cy.get('#delete-blog').should('not.exist')
+          })
+        })
+      })
+
+      describe('Blogs are sorted', function () {
+        it('by likes in descending order', function () {
+          cy.get('.blogs').then((blogs) => {
+            const [first, second, last] = blogs
+
+            cy.wrap(first).find('.blog-title').invoke('text').as('First')
+            cy.wrap(second).find('.blog-title').as('second_initialOrdering')
+            cy.get('@second_initialOrdering').invoke('text').as('Second')
+            cy.wrap(second)
+              .find('#num-of-likes')
+              .invoke('text')
+              .as('Second_likes')
+
+            cy.wrap(second).find('#like-blog').dblclick()
+            cy.wrap(last).find('#like-blog').click()
+
+            cy.get('@First').then((First) => {
+              cy.get('.blogs').then((currentBlogOrder) => {
+                // first blog (0 likes) moves to position 2 and the second blog (2 likes) moves to position 0
+                cy.wrap(currentBlogOrder[2])
+                  .find('.blog-title')
+                  .invoke('text')
+                  .as('firstBecomesLast')
+
+                cy.wrap(currentBlogOrder[0])
+                  .find('#num-of-likes')
+                  .invoke('text')
+                  .as('secondBecomesFirst_likes')
+
+                cy.wrap(currentBlogOrder[0])
+                  .find('.blog-title')
+                  .invoke('text')
+                  .as('secondBecomesFirst')
+
+                cy.get('@firstBecomesLast').then((firstBecomesLast) => {
+                  expect(First).to.eq(firstBecomesLast)
+                })
+
+                cy.get('@Second').then((Second) => {
+                  cy.get('@secondBecomesFirst').then((secondBecomesFirst) => {
+                    expect(Second).to.eq(secondBecomesFirst)
+                  })
+                })
+
+                cy.get('@Second_likes').then((likes) => {
+                  cy.get('@secondBecomesFirst_likes').then(
+                    (secondBecomesFirst_likes) => {
+                      expect(parseFloat(likes)).to.be.lessThan(
+                        parseFloat(secondBecomesFirst_likes)
+                      )
+                    }
+                  )
+                })
+              })
+            })
+
+            expect(blogs.length).to.eq(3)
+            cy.get('.blogs')
+              .find('.blog-title')
+              .first()
+              .contains('redux with react') // current position = first
+            cy.get('@second_initialOrdering').should(
+              'contain',
+              'redux with react'
+            ) // previous position = second
           })
         })
       })
