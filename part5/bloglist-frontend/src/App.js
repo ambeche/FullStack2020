@@ -8,12 +8,15 @@ import loginService from './services/login'
 import userService from './services/users'
 import ToggleVisibility from './components/ToggleVisibility'
 import Button from './components/Button'
+import SignUpForm from './components/SignUpForm'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
   const [noticeToUser, setNoticeToUser] = useState(null)
+  const [toggleSignUp, setToggleSignUp] = useState(false)
   const blogFormRef = useRef()
+
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs))
@@ -49,8 +52,19 @@ const App = () => {
     }
   }
 
+  const registerUser = async (newUser) => {
+    try {
+      const createdUser = await userService.createUser(newUser)
+      await handleLogin({username: createdUser.username, password: newUser.password})
+    } catch (err) {
+      console.log('sign up error', err.response.data.error)
+      await alertUser(`${err.response.data.error}`, 0)
+    }
+  }
+
   const handleLogout = () => {
     setUser(null)
+    setToggleSignUp(false)
     window.localStorage.removeItem('loggedInUser')
   }
 
@@ -111,7 +125,10 @@ const App = () => {
     return (
       <div>
         <Notification noticeToUser={noticeToUser} />
-        <LoginForm login={handleLogin} />
+        <LoginForm login={handleLogin} toggleSignUp={toggleSignUp} />
+        <ToggleVisibility labelOne="Sign in" labelTwo="Register" setToggleSignUp={setToggleSignUp} >
+          <SignUpForm addUser={registerUser}/>
+        </ToggleVisibility>
       </div>
     )
   }

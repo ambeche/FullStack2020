@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Button from './Button'
 
-const LoginForm = ({ login }) => {
+const LoginForm = ({ login, toggleSignUp }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
@@ -16,7 +16,7 @@ const LoginForm = ({ login }) => {
   }
 
   return (
-    <>
+    <div style={{display: toggleSignUp ? 'none' : ''}}>
       <h2>Log in to application</h2>
       <form onSubmit={handleLogin}>
         <div>
@@ -45,7 +45,7 @@ const LoginForm = ({ login }) => {
         </div>
         <Button label='log in' color='green'/>
       </form>
-    </>
+    </div>
   )
 }
 
