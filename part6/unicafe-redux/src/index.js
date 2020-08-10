@@ -5,27 +5,16 @@ import reducer from './reducer'
 
 const store = createStore(reducer)
 
+store.dispatch({ type: 'GOOD', votes: 5})
+store.dispatch({ type: 'OK', votes: 4})
+store.dispatch({ type: 'BAD', votes: 2})
+
 const App = () => {
-  const good = () => {
-    store.dispatch({
-      type: 'GOOD'
-    })
-  }
-  const ok = () => {
-    store.dispatch({
-      type: 'OK'
-    })
-  }
-  const bad = () => {
-    store.dispatch({
-      type: 'BAD'
-    })
-  }
-  const reset = () => {
-    store.dispatch({
-      type: 'ZERO'
-    })
-  }
+
+  const good = () =>  store.dispatch({ type: 'GOOD', votes: 1})
+  const ok = () => store.dispatch({type: 'OK', votes: 1 })
+  const bad = () => store.dispatch({type: 'BAD', votes: 1})
+  const reset = () => store.dispatch({type: 'ZERO'})
 
   return (
     <div>
