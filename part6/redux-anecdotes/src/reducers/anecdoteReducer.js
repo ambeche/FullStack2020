@@ -14,10 +14,7 @@ const voteAnecdote = (id) => {
 const createAnecdote = (newAnecdote) => {
   return {
     type: "NEW_ANECDOTE",
-    anecdote: {
-      content: newAnecdote,
-      votes: 0,
-    },
+    newAnecdote,
   };
 };
 
@@ -29,7 +26,7 @@ const reducer = (state = [], action) => {
     case "INIT_ANECDOTE":
       return action.anecdotes;
     case "NEW_ANECDOTE":
-      return [...state, action.anecdote];
+      return [...state, action.newAnecdote];
     case "VOTE":
       return state.map((a) =>
         a.id !== action.id ? a : { ...a, votes: a.votes + 1 }
