@@ -16,6 +16,7 @@ const Anecdote = ({ anecdote, handleVote }) => {
 };
 
 const AnecdoteList = () => {
+  const dispatch = useDispatch();
   const anecdotes = useSelector(({anecdotes, filter}) =>
     !filter
       ? anecdotes
@@ -23,8 +24,7 @@ const AnecdoteList = () => {
           a.content.toLowerCase().includes(filter.toLowerCase())
         )
   );
-  const dispatch = useDispatch();
-
+ 
   const vote = (anecdote) => {
     dispatch(voteAnecdote(anecdote.id));
     notify(dispatch, ` You voted '${anecdote.content}'`);
