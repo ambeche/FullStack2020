@@ -18,7 +18,7 @@ const Anecdote = ({ anecdote, handleVote }) => {
 const AnecdoteList = (props) => {
   const vote = (anecdote) => {
     props.voteAnecdote(anecdote);
-    props.setNotification(` You voted '${anecdote.content}'`);
+    props.setNotification(` You voted '${anecdote.content}'`, 5);
   };
 
   const sortByVotes = (anecdotesArray) =>
