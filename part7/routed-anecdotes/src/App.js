@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Switch, Route, Link, useRouteMatch, useHistory } from "react-router-dom";
+import {useField} from "./hooks";
 
 const Menu = () => {
   const padding = {
@@ -33,10 +34,11 @@ const AnecdoteList = ({ anecdotes }) => (
   </div>
 );
 
-const Anecdote = ({ anecdote }) => (
+const Anecdote = ({ anecdote, vote }) => (
   <div>
     <h2>{anecdote.content}</h2>
     has {anecdote.votes} votes
+    <button onClick={()=>vote(anecdote.id)}>vote</button>
   </div>
 );
 
@@ -87,17 +89,17 @@ const Notification = ({ message }) => {
 };
 
 const CreateNew = (props) => {
-  const [content, setContent] = useState("");
-  const [author, setAuthor] = useState("");
-  const [info, setInfo] = useState("");
+  const content = useField("text");
+  const author = useField("text");
+  const info = useField("text");
   const history = useHistory()
 
   const handleSubmit = (e) => {
     e.preventDefault();
     props.addNew({
-      content,
-      author,
-      info,
+      content: content.value,
+      author: author.value,
+      info: info.value,
       votes: 0,
     });
     history.push('/')
@@ -109,27 +111,15 @@ const CreateNew = (props) => {
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input
-            name="content"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-          />
+          <input {...content}/>
         </div>
         <div>
           author
-          <input
-            name="author"
-            value={author}
-            onChange={(e) => setAuthor(e.target.value)}
-          />
+          <input {...author}/>
         </div>
         <div>
           url for more info
-          <input
-            name="info"
-            value={info}
-            onChange={(e) => setInfo(e.target.value)}
-          />
+          <input {...info}/>
         </div>
         <button>create</button>
       </form>
@@ -194,13 +184,13 @@ const App = () => {
       <Notification message={notification} />
       <Switch>
         <Route path="/anecdotes/:id">
-          <Anecdote anecdote={anecdote} />
+          <Anecdote anecdote={anecdote} vote={vote}/>
         </Route>
         <Route path="/about">
           <About />
         </Route>
         <Route path="/create">
-           <CreateNew addNew={addNew} />
+          <CreateNew addNew={addNew} />
         </Route>
         <Route exact path="/">
           <AnecdoteList anecdotes={anecdotes} />
