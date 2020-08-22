@@ -1,12 +1,20 @@
 {
   "notes": [
     {
-      "content": "custom-hookit aivan mahtavia",
+      "content": "custom-hooks are awesome!",
       "id": 1
     },
     {
-      "content": "paras feature ikinä <3",
+      "content": "best feature ever <3",
       "id": 2
+    },
+    {
+      "content": "My journey with FullStack2020 has been a fruitful one; so much learned.",
+      "id": 3
+    },
+    {
+      "content": "I love coding, and challenging myself. I aim to impact the world one code at a time.",
+      "id": 4
     }
   ],
   "persons": [
@@ -14,6 +22,21 @@
       "name": "mluukkai",
       "number": "040-5483923",
       "id": 1
+    },
+    {
+      "name": "Tamanji Che",
+      "number": "046-67598475",
+      "id": 2
+    },
+    {
+      "name": "Tony Stack",
+      "number": "045-98003457",
+      "id": 3
+    },
+    {
+      "name": "Sari Maki",
+      "number": "046-90909090",
+      "id": 4
     }
   ]
 }
