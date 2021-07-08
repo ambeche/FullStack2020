@@ -16,7 +16,7 @@ const useField = (type) => {
 };
 
 const useCountry = (name) => {
-  const [country, setCountry] = useState(null);C
+  const [country, setCountry] = useState(null);
 
   useEffect(() => {
     if (name) {
