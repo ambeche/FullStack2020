@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
+import { useDispatch } from 'react-redux'
 import Blog from './components/Blog'
 import BlogForm from './components/BlogForm'
 import LoginForm from './components/LoginForm'
@@ -9,11 +10,12 @@ import userService from './services/users'
 import ToggleVisibility from './components/ToggleVisibility'
 import Button from './components/Button'
 import SignUpForm from './components/SignUpForm'
+import {notifyUser} from './reducers/notificationReducer'
 
 const App = () => {
+  const dispatch = useDispatch()
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
-  const [noticeToUser, setNoticeToUser] = useState(null)
   const [toggleSignUp, setToggleSignUp] = useState(false)
   const blogFormRef = useRef()
 
@@ -34,8 +36,8 @@ const App = () => {
   const sortedBlogs = blogs.concat().sort((a, b) => a.likes - b.likes).reverse()
 
   const alertUser = async (newMessage, newCode) => {
-    setNoticeToUser({ message: newMessage, code: newCode })
-    await setTimeout(() => setNoticeToUser(null), 5000)
+    dispatch(notifyUser({ message: newMessage, code: newCode }))
+    await setTimeout(() => dispatch(notifyUser(null)), 5000)
   }
 
   const handleLogin = async (credentials) => {
@@ -124,7 +126,7 @@ const App = () => {
   if (user === null) {
     return (
       <div>
-        <Notification noticeToUser={noticeToUser} />
+        <Notification />
         <LoginForm login={handleLogin} toggleSignUp={toggleSignUp} />
         <ToggleVisibility labelOne="Sign in" labelTwo="Register" setToggleSignUp={setToggleSignUp} >
           <SignUpForm addUser={registerUser}/>
@@ -135,7 +137,7 @@ const App = () => {
 
   return (
     <div>
-      <Notification noticeToUser={noticeToUser} />
+      <Notification />
       <h2>blogs</h2>
       <p>
         {user.name} is logged in
