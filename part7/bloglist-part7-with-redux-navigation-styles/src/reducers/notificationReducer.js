@@ -1,17 +1,30 @@
 const notificationReducer = (state = null, action) => {
   switch (action.type) {
     case 'SET_NOTICE':
-      return action.notice
+      return {...action};
+    case 'RESET_NOTICE':
+      return null;
     default:
-      return state
+      return state;
   }
-}
+};
 
-export const notifyUser = (notice) => {
-  return {
-    type: 'SET_NOTICE',
-    notice
-  }
-}
+export const notifyUser = (message, code) => {
+  return async (dispatch) => {
+    dispatch({
+      type: 'SET_NOTICE',
+      message,
+      code
+    });
 
-export default notificationReducer
+    await new Promise(() => {
+      setTimeout(() => {
+        dispatch({
+          type: 'RESET_NOTICE'
+        });
+      }, 5000);
+    });
+  };
+};
+
+export default notificationReducer;
