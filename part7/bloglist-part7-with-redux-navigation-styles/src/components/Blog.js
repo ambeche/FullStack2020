@@ -1,31 +1,45 @@
-import React from 'react'
-import ToggleVisibility from './ToggleVisibility'
-import Button from './Button'
-import PropTypes from 'prop-types'
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { modifyBlog, deleteBlog } from '../reducers/blogsReducer';
+import { notifyUser } from '../reducers/notificationReducer';
+import ToggleVisibility from './ToggleVisibility';
+import Button from './Button';
+import PropTypes from 'prop-types';
 
-const Blog = ({ blog, loggedUser, modifyBlog, handleBlogDeletion }) => {
+const Blog = ({ blog, loggedUser }) => {
+  const dispatch = useDispatch();
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
     border: 'solid',
     borderWidth: 1,
-    marginBottom: 5,
-  }
+    marginBottom: 5
+  };
 
-  const likeBlog = () => modifyBlog(blog)
+  const likeBlog = () => {
+    dispatch(
+      modifyBlog({ ...blog, user: blog.user.id, likes: (blog.likes += 1) })
+    );
+    dispatch(notifyUser(`Thanks for liking the post, '${blog.title}'!`, 1));
+  };
 
-  const handleDeletion = () =>
+  const handleBlogDeletion = () =>
     window.confirm(`Remove blog '${blog.title}' by ${blog.author}`)
-      ? handleBlogDeletion(blog.id)
-      : null
+      ? dispatch(deleteBlog(blog.id))
+      : null;
 
   const toggleDeleteButton = () => {
     if (blog.user.username === loggedUser) {
       return (
-        <Button handleClick={handleDeletion} label="delete" id="delete-blog" color="#f44336" />
-      )
+        <Button
+          handleClick={handleBlogDeletion}
+          label="delete"
+          id="delete-blog"
+          color="#f44336"
+        />
+      );
     }
-  }
+  };
 
   return (
     <div className="blogs" style={blogStyle}>
@@ -35,21 +49,24 @@ const Blog = ({ blog, loggedUser, modifyBlog, handleBlogDeletion }) => {
       <ToggleVisibility labelOne="hide" labelTwo="view" className="toggle">
         <div className="blog-url"> {blog.url}</div>
         <div>
-            likes <span id="num-of-likes">{blog.likes}</span>
-          <Button handleClick={likeBlog} label="like" color="green" id="like-blog"/>
+          likes <span id="num-of-likes">{blog.likes}</span>
+          <Button
+            handleClick={likeBlog}
+            label="like"
+            color="green"
+            id="like-blog"
+          />
         </div>
         <div> {blog.author}</div>
         {toggleDeleteButton()}
       </ToggleVisibility>
     </div>
-  )
-}
+  );
+};
 
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,
-  loggedUser: PropTypes.string,
-  modifyBlog: PropTypes.func,
-  handleBlogDeletion: PropTypes.func,
-}
+  loggedUser: PropTypes.string
+};
 
-export default Blog
+export default Blog;

@@ -1,8 +1,8 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-const Notification = ({ noticeToUser }) => {
-  const notice = useSelector(state => state)
+const Notification = () => {
+  const notice = useSelector((state) => state.notice);
   if (notice === null) return null;
 
   const messageStyle = {

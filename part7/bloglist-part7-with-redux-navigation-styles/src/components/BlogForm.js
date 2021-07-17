@@ -1,27 +1,32 @@
-import React, { useState } from 'react'
-import Button from './Button'
-import PropTypes from 'prop-types'
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import Button from './Button';
+import { notifyUser } from '../reducers/notificationReducer';
+import { createNewBlog } from '../reducers/blogsReducer';
 
-const BlogForm = ({ addBlog }) => {
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
+const BlogForm = ({ alertUser, toggleForm }) => {
+  const dispatch = useDispatch();
+  const [title, setTitle] = useState('');
+  const [author, setAuthor] = useState('');
+  const [url, setUrl] = useState('');
 
-  const handleTitleChange = ({ target }) => setTitle(target.value)
-  const handleAuthorChange = ({ target }) => setAuthor(target.value)
-  const handleUrlChange = ({ target }) => setUrl(target.value)
+  const handleTitleChange = ({ target }) => setTitle(target.value);
+  const handleAuthorChange = ({ target }) => setAuthor(target.value);
+  const handleUrlChange = ({ target }) => setUrl(target.value);
 
   const handleBlogCreation = (event) => {
-    event.preventDefault()
-    addBlog({ title, author, url })
-
-    setTitle('')
-    setAuthor('')
-    setUrl('')
-  }
+    event.preventDefault();
+    toggleForm.current.toggleVisibility();
+    // dispatches the newly created blog to redux store
+    dispatch(createNewBlog({ title, author, url }));
+    dispatch(notifyUser(`A new blog '${title}' has been added!`, 1));
+    setTitle('');
+    setAuthor('');
+    setUrl('');
+  };
 
   return (
-    <div style={{ marginBottom:5 }}>
+    <div style={{ marginBottom: 5 }}>
       <h2>Create New Blog</h2>
       <form onSubmit={handleBlogCreation}>
         <div>
@@ -60,14 +65,10 @@ const BlogForm = ({ addBlog }) => {
             />
           </label>
         </div>
-        <Button label='create' color= 'green' id='post-blog' />
+        <Button label="create" color="green" id="post-blog" />
       </form>
     </div>
-  )
-}
+  );
+};
 
-BlogForm.propTypes = {
-  addBlog: PropTypes.func.isRequired,
-}
-
-export default BlogForm
+export default BlogForm;
