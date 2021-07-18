@@ -1,5 +1,6 @@
 import blogService from '../services/blogs';
 import userService from '../services/users';
+import { notifyUser } from '../reducers/notificationReducer';
 
 const blogsReducer = (state = [], action) => {
   switch (action.type) {
@@ -42,6 +43,9 @@ const createNewBlog = (newBlog) => {
       });
     } catch (err) {
       console.log('blog creation failed', err.response.data.error);
+      dispatch(
+        notifyUser(`blog creation failed: ${err.response.data.error}`, 0)
+      );
     }
   };
 };
@@ -72,6 +76,7 @@ const deleteBlog = (id) => {
           type: 'DELETE_BLOG',
           id
         });
+        dispatch(notifyUser(`blog successfully deleted?`, 1));
       }
     } catch (err) {
       console.error('error', err);

@@ -1,5 +1,5 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React from 'react';
+import PropTypes from 'prop-types';
 
 const Button = ({ marginBottom, color, label, id, className, handleClick }) => {
   const buttonStyle = {
@@ -9,16 +9,21 @@ const Button = ({ marginBottom, color, label, id, className, handleClick }) => {
     backgroundColor: color,
     textDecoration: 'none',
     color: '#ffffff',
-    marginBottom: marginBottom,
-  }
+    marginBottom: marginBottom
+  };
   return (
     <>
-      <button style={buttonStyle} onClick={handleClick} id={id} className={className}>
+      <button
+        style={buttonStyle}
+        onClick={handleClick}
+        id={id}
+        className={className}
+      >
         {label}
       </button>
     </>
-  )
-}
+  );
+};
 
 Button.propTypes = {
   label: PropTypes.string.isRequired,
@@ -26,5 +31,5 @@ Button.propTypes = {
   color: PropTypes.string,
   marginBottom: PropTypes.number,
   id: PropTypes.string
-}
-export default Button
+};
+export default Button;

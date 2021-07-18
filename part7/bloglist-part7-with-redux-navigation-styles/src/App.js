@@ -1,81 +1,44 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Blogs from './components/Blogs';
 import BlogForm from './components/BlogForm';
 import LoginForm from './components/LoginForm';
 import Notification from './components/Notification';
-import blogService from './services/blogs';
-import loginService from './services/login';
-import userService from './services/users';
 import ToggleVisibility from './components/ToggleVisibility';
 import Button from './components/Button';
 import SignUpForm from './components/SignUpForm';
 import { setBlogs } from './reducers/blogsReducer';
+import { setCurrentUser, logoutUser, setUsers } from './reducers/usersReducer';
 
 const App = () => {
   const dispatch = useDispatch();
-  const [user, setUser] = useState(null);
-  const [toggleSignUp, setToggleSignUp] = useState(false);
+  const [currentUser] = useSelector((state) => [state.users.currentUser]);
   const blogFormRef = useRef();
 
-  // initializes the redux store with blogs from the server
   useEffect(() => {
+    // initializes the redux store with blogs users from the server
     dispatch(setBlogs());
+    dispatch(setUsers());
   }, [dispatch]);
 
   useEffect(() => {
-    const isLoggedIn = window.localStorage.getItem('loggedInUser');
+    const isLoggedIn = window.localStorage.getItem('currentUser');
     if (isLoggedIn) {
-      const parsedUser = JSON.parse(isLoggedIn);
-      setUser(parsedUser);
-      blogService.setToken(parsedUser.token);
+      dispatch(setCurrentUser(JSON.parse(isLoggedIn)));
     }
-  }, []);
-
-  const handleLogin = async (credentials) => {
-    try {
-      const user = await loginService.login(credentials);
-
-      window.localStorage.setItem('loggedInUser', JSON.stringify(user));
-
-      blogService.setToken(user.token);
-      setUser(user);
-    } catch (err) {
-      console.log('login error', err.response.data.error);
-      // await alertUser('Wrong password or username', 0);
-    }
-  };
-
-  const registerUser = async (newUser) => {
-    try {
-      const createdUser = await userService.createUser(newUser);
-      await handleLogin({
-        username: createdUser.username,
-        password: newUser.password
-      });
-    } catch (err) {
-      console.log('sign up error', err.response.data.error);
-      // await alertUser(`${err.response.data.error}`, 0);
-    }
-  };
+  }, [dispatch]);
 
   const handleLogout = () => {
-    setUser(null);
-    setToggleSignUp(false);
-    window.localStorage.removeItem('loggedInUser');
+    dispatch(logoutUser());
   };
 
-  if (user === null) {
+  if (!currentUser) {
     return (
       <div>
         <Notification />
-        <LoginForm login={handleLogin} toggleSignUp={toggleSignUp} />
-        <ToggleVisibility
-          labelOne="Sign in"
-          labelTwo="Register"
-          setToggleSignUp={setToggleSignUp}
-        >
-          <SignUpForm addUser={registerUser} />
+        <LoginForm />
+        <ToggleVisibility labelOne="Sign in" labelTwo="Register">
+          <SignUpForm />
         </ToggleVisibility>
       </div>
     );
@@ -86,7 +49,7 @@ const App = () => {
       <Notification />
       <h2>blogs</h2>
       <p>
-        {user.name} is logged in
+        {currentUser.name} is logged in
         <Button handleClick={handleLogout} label="logout" color="grey" />
       </p>
       <ToggleVisibility
@@ -97,7 +60,7 @@ const App = () => {
         <BlogForm toggleForm={blogFormRef} />
       </ToggleVisibility>
 
-      <Blogs loggedUser={user.username} />
+      <Blogs />
     </div>
   );
 };

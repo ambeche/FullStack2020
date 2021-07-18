@@ -1,13 +1,14 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { modifyBlog, deleteBlog } from '../reducers/blogsReducer';
 import { notifyUser } from '../reducers/notificationReducer';
 import ToggleVisibility from './ToggleVisibility';
 import Button from './Button';
 import PropTypes from 'prop-types';
 
-const Blog = ({ blog, loggedUser }) => {
+const Blog = ({ blog }) => {
   const dispatch = useDispatch();
+  const currentUser = useSelector((state) => state.users.currentUser);
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -29,7 +30,7 @@ const Blog = ({ blog, loggedUser }) => {
       : null;
 
   const toggleDeleteButton = () => {
-    if (blog.user.username === loggedUser) {
+    if (blog.user.username === currentUser.username) {
       return (
         <Button
           handleClick={handleBlogDeletion}
@@ -65,8 +66,7 @@ const Blog = ({ blog, loggedUser }) => {
 };
 
 Blog.propTypes = {
-  blog: PropTypes.object.isRequired,
-  loggedUser: PropTypes.string
+  blog: PropTypes.object.isRequired
 };
 
 export default Blog;

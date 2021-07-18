@@ -1,22 +1,26 @@
-import React, { useState } from 'react'
-import Button from './Button'
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setCurrentUser } from '../reducers/usersReducer';
+import Button from './Button';
 
-const LoginForm = ({ login, toggleSignUp }) => {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-
-  const handleUsernameChange = ({ target }) => setUsername(target.value)
-  const handlePasswordChange = ({ target }) => setPassword(target.value)
+const LoginForm = () => {
+  const dispatch = useDispatch();
+  const toggleSignUp = useSelector((state) => state.toggle);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  console.log(toggleSignUp);
+  const handleUsernameChange = ({ target }) => setUsername(target.value);
+  const handlePasswordChange = ({ target }) => setPassword(target.value);
 
   const handleLogin = (event) => {
-    event.preventDefault()
-    login({ username, password })
-    setUsername('')
-    setPassword('')
-  }
+    event.preventDefault();
+    dispatch(setCurrentUser({ username, password }));
+    setUsername('');
+    setPassword('');
+  };
 
   return (
-    <div style={{display: toggleSignUp ? 'none' : ''}}>
+    <div style={{ display: toggleSignUp ? 'none' : '' }}>
       <h2>Log in to application</h2>
       <form onSubmit={handleLogin}>
         <div>
@@ -43,10 +47,10 @@ const LoginForm = ({ login, toggleSignUp }) => {
             />
           </label>
         </div>
-        <Button label='log in' color='green'/>
+        <Button label="log in" color="green" />
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default LoginForm
+export default LoginForm;

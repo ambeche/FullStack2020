@@ -1,8 +1,11 @@
 import React, { useState, useImperativeHandle } from 'react';
+import { useDispatch } from 'react-redux';
 import Button from './Button';
 import PropTypes from 'prop-types';
+import {toggleOff, toggleOn} from '../reducers/toggleReducer';
 
 const ToggleVisibility = React.forwardRef((props, ref) => {
+  const dispatch = useDispatch();
   const [visible, setVisibility] = useState(false);
 
   const hideOrShow = { display: visible ? '' : 'none' };
@@ -11,8 +14,8 @@ const ToggleVisibility = React.forwardRef((props, ref) => {
   const toggleVisibility = () => {
     if (label === 'Sign in' || label === 'Register')
       label === 'Register'
-        ? props.setToggleSignUp(true)
-        : props.setToggleSignUp(false);
+        ? dispatch(toggleOn())
+        : dispatch(toggleOff());
     setVisibility(!visible);
   };
 
