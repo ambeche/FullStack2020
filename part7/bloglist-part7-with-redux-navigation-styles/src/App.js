@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Blogs from './components/Blogs';
+import DataList from './components/DataList';
 import BlogForm from './components/BlogForm';
 import LoginForm from './components/LoginForm';
 import Notification from './components/Notification';
@@ -9,6 +9,8 @@ import Button from './components/Button';
 import SignUpForm from './components/SignUpForm';
 import { setBlogs } from './reducers/blogsReducer';
 import { setCurrentUser, logoutUser, setUsers } from './reducers/usersReducer';
+import Blog from './components/Blog';
+import User from './components/User';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -59,8 +61,12 @@ const App = () => {
       >
         <BlogForm toggleForm={blogFormRef} />
       </ToggleVisibility>
-
-      <Blogs />
+      <DataList type="blogs" sortby="likes">
+        <Blog />
+      </DataList>
+      <DataList type="users" sortby="numberOfBlogs">
+        <User />
+      </DataList>
     </div>
   );
 };

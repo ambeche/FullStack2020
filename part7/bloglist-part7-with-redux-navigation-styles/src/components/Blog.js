@@ -4,11 +4,11 @@ import { modifyBlog, deleteBlog } from '../reducers/blogsReducer';
 import { notifyUser } from '../reducers/notificationReducer';
 import ToggleVisibility from './ToggleVisibility';
 import Button from './Button';
-import PropTypes from 'prop-types';
 
-const Blog = ({ blog }) => {
+const Blog = ({ data }) => {
   const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.users.currentUser);
+  const blog = data;
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -63,10 +63,6 @@ const Blog = ({ blog }) => {
       </ToggleVisibility>
     </div>
   );
-};
-
-Blog.propTypes = {
-  blog: PropTypes.object.isRequired
 };
 
 export default Blog;

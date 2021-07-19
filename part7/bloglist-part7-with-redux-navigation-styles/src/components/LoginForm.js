@@ -8,7 +8,6 @@ const LoginForm = () => {
   const toggleSignUp = useSelector((state) => state.toggle);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  console.log(toggleSignUp);
   const handleUsernameChange = ({ target }) => setUsername(target.value);
   const handlePasswordChange = ({ target }) => setPassword(target.value);
 
