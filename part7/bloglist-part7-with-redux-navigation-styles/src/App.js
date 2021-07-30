@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Switch, NavLink, Route, useRouteMatch } from 'react-router-dom';
 import DataList from './components/DataList';
 import BlogForm from './components/BlogForm';
 import LoginForm from './components/LoginForm';
@@ -11,10 +12,18 @@ import { setBlogs } from './reducers/blogsReducer';
 import { setCurrentUser, logoutUser, setUsers } from './reducers/usersReducer';
 import Blog from './components/Blog';
 import User from './components/User';
+import UserDetails from './components/UserDetails';
+import BlogDetails from './components/BlogDetails';
 
 const App = () => {
   const dispatch = useDispatch();
-  const [currentUser] = useSelector((state) => [state.users.currentUser]);
+  const [currentUser, users, blogs] = useSelector((state) => [
+    state.users.currentUser,
+    state.users.users,
+    state.blogs
+  ]);
+  const matchedUser = useRouteMatch('/users/:id');
+  const matchedBlog = useRouteMatch('/blogs/:id');
   const blogFormRef = useRef();
 
   useEffect(() => {
@@ -34,6 +43,9 @@ const App = () => {
     dispatch(logoutUser());
   };
 
+  const detailsToBeShown = (match, data) =>
+    match && data.find((data) => data.id === match.params.id);
+
   if (!currentUser) {
     return (
       <div>
@@ -48,12 +60,15 @@ const App = () => {
 
   return (
     <div>
-      <Notification />
-      <h2>blogs</h2>
-      <p>
+      <div>
+        <NavLink to="/">Blogs</NavLink>
+        <NavLink to="/users">Users</NavLink>
         {currentUser.name} is logged in
         <Button handleClick={handleLogout} label="logout" color="grey" />
-      </p>
+      </div>
+      <Notification />
+      <h2>blogs</h2>
+
       <ToggleVisibility
         ref={blogFormRef}
         labelOne="cancel"
@@ -61,12 +76,24 @@ const App = () => {
       >
         <BlogForm toggleForm={blogFormRef} />
       </ToggleVisibility>
-      <DataList type="blogs" sortby="likes">
-        <Blog />
-      </DataList>
-      <DataList type="users" sortby="numberOfBlogs">
-        <User />
-      </DataList>
+      <Switch>
+        <Route path="/users/:id">
+          <UserDetails user={detailsToBeShown(matchedUser, users)} />
+        </Route>
+        <Route path="/blogs/:id">
+          <BlogDetails blog={detailsToBeShown(matchedBlog, blogs)} />
+        </Route>
+        <Route path="/users">
+          <DataList type="users" sortby="numberOfBlogs">
+            <User />
+          </DataList>
+        </Route>
+        <Route path="/">
+          <DataList type="blogs" sortby="likes">
+            <Blog />
+          </DataList>
+        </Route>
+      </Switch>
     </div>
   );
 };

@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router';
 import { useDispatch } from 'react-redux';
 import Button from './Button';
 import { notifyUser } from '../reducers/notificationReducer';
 import { createNewBlog } from '../reducers/blogsReducer';
 
-const BlogForm = ({ alertUser, toggleForm }) => {
+const BlogForm = ({ toggleForm }) => {
   const dispatch = useDispatch();
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [url, setUrl] = useState('');
+  const history = useHistory();
 
   const handleTitleChange = ({ target }) => setTitle(target.value);
   const handleAuthorChange = ({ target }) => setAuthor(target.value);
@@ -23,6 +25,7 @@ const BlogForm = ({ alertUser, toggleForm }) => {
     setTitle('');
     setAuthor('');
     setUrl('');
+    history.push('/')
   };
 
   return (

@@ -21,4 +21,4 @@ const toggleOff = () => {
   };
 };
 
-export { toggleReducer as default, toggleOn, toggleOff}
+export { toggleReducer as default, toggleOn, toggleOff };

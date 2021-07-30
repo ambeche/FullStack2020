@@ -1,5 +1,5 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { NavLink } from 'react-router-dom';
 
 const User = ({ data }) => {
   const user = data;
@@ -7,17 +7,17 @@ const User = ({ data }) => {
     paddingTop: 10,
     paddingLeft: 2,
     marginBottom: 5,
-    width: '20%',
+    width: '20%'
   };
-  const itemStyle = {padding: 5}
+  const itemStyle = { padding: 5 };
 
   return (
     <div style={style}>
       <span style={itemStyle}>
-        {user.name}
+        <NavLink to={`/users/${user.id}`}>{user.name}</NavLink>
       </span>
-      <span style={{...itemStyle, textAlign: 'center', float: 'right'}}>
-        {user.numberOfBlogs}
+      <span style={{ ...itemStyle, textAlign: 'center', float: 'right' }}>
+        {user.blogs.length}
       </span>
     </div>
   );
