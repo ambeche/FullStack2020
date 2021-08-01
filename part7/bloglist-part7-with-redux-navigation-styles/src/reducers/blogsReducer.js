@@ -8,13 +8,17 @@ const blogsReducer = (state = [], action) => {
       return action.blogs;
     case 'NEW_BLOG':
       return [...state, action.newBlog];
-    case 'MODIFY_BLOG':
+    case 'LIKE_BLOG':
       // returns a new state contianing the modified blog
       return state.map((b) =>
-        b.id !== action.modifiedBlog.id ? b : { ...action.modifiedBlog }
+        b.id !== action.likedBlog.id ? b : { ...action.likedBlog }
       );
     case 'DELETE_BLOG':
       return state.filter((blog) => blog.id !== action.id);
+    case 'COMMENT_ON_BLOG':
+      return state.map((b) =>
+        b.id !== action.commentedBlog.id ? b : { ...action.commentedBlog }
+      );
     default:
       return state;
   }
@@ -53,11 +57,11 @@ const createNewBlog = (newBlog) => {
 const modifyBlog = (blog) => {
   return async (dispatch) => {
     try {
-      const modifiedBlog = await blogService.updateBlog(blog, blog.id);
-      modifiedBlog.user = blog.user; // replaces the ObjectId type of the user field from the server with the user object
+      const likedBlog = await blogService.updateBlog(blog, blog.id);
+      likedBlog.user = blog.user; // replaces the ObjectId type of the user field from the server with the user object
       dispatch({
-        type: 'MODIFY_BLOG',
-        modifiedBlog
+        type: 'LIKE_BLOG',
+        likedBlog
       });
     } catch (err) {
       console.error('error', err.message);
@@ -84,10 +88,27 @@ const deleteBlog = (id) => {
   };
 };
 
+const commentOnBlog = (cmt, blogId) => {
+  return async (dispatch) => {
+    try {
+      // returns the commented blog with the newly created comment
+      const commentedBlog = await blogService.createComment(cmt, blogId);
+
+      dispatch({
+        type: 'COMMENT_ON_BLOG',
+        commentedBlog
+      });
+    } catch (err) {
+      console.error('error', err.message);
+    }
+  };
+};
+
 export {
   blogsReducer as default,
   setBlogs,
   createNewBlog,
   modifyBlog,
-  deleteBlog
+  deleteBlog,
+  commentOnBlog
 };

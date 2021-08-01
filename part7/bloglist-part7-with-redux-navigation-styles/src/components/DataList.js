@@ -4,15 +4,17 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 
-const sortData = (data, sortby) =>
-  data
-    .concat()
-    .sort((a, b) => a[sortby] - b[sortby])
-    .reverse();
-
 const DataList = ({ type, sortby, children }) => {
+  const sortData = (data) =>
+    data
+      .concat()
+      .sort(
+        (a, b) => a[sortby] - (type === 'users' ? b.blogs.length : b[sortby])
+      )
+      .reverse();
+
   const dataList = useSelector((state) =>
-    sortData(type === 'users' ? state[type][type] : state[type], sortby)
+    sortData(type === 'users' ? state[type][type] : state[type])
   );
 
   return (
@@ -22,7 +24,7 @@ const DataList = ({ type, sortby, children }) => {
           <h2>Users</h2> <h4 style={{ marginLeft: '18%' }}>Blogs Created</h4>
         </div>
       )}
-      {dataList.map((data) =>
+      {dataList?.map((data) =>
         // This approach is used instead of {props.children} because of the additional
         // props that are required to be passed to the child by this parent component.
         // The child component is accessed and its clone is returned with newly passed props

@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { modifyBlog, deleteBlog } from '../reducers/blogsReducer';
 import { Link } from 'react-router-dom';
 import Button from './Button';
+import CommentForm from './CommentForm';
 
 const BlogDetails = ({ blog }) => {
   const dispatch = useDispatch();
@@ -23,6 +24,12 @@ const BlogDetails = ({ blog }) => {
       history.push('/');
     }
   };
+  const commentsOnBlog = () =>
+    blog?.comments?.map((cmt) => (
+      <ul key={cmt.id}>
+        <li>{cmt.content}</li>
+      </ul>
+    ));
 
   const toggleDeleteButton = () => {
     if (blog?.user?.username === currentUser.username) {
@@ -59,8 +66,6 @@ const BlogDetails = ({ blog }) => {
           likes <span id="num-of-likes">{blog.likes}</span>
         </li>
         <li>added by {blog.user?.name} </li>
-        {console.log('user', currentUser)}
-        {console.log('user2', blog.user)}
       </ul>
       <div>
         <Button
@@ -71,6 +76,9 @@ const BlogDetails = ({ blog }) => {
         />
         {toggleDeleteButton()}
       </div>
+      <h3>Comments</h3>
+      <CommentForm blogId={blog.id} />
+      {commentsOnBlog()}
     </div>
   );
 };
