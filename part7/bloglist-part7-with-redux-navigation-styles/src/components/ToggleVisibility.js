@@ -2,7 +2,7 @@ import React, { useState, useImperativeHandle } from 'react';
 import { useDispatch } from 'react-redux';
 import Button from './Button';
 import PropTypes from 'prop-types';
-import {toggleOff, toggleOn} from '../reducers/toggleReducer';
+import { toggleOff, toggleOn } from '../reducers/toggleReducer';
 
 const ToggleVisibility = React.forwardRef((props, ref) => {
   const dispatch = useDispatch();

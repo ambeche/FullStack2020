@@ -16,4 +16,4 @@ const createUser = async (user) => {
   return res.data;
 };
 
-export default {getUsers, getUser, createUser };
+export default { getUsers, getUser, createUser };

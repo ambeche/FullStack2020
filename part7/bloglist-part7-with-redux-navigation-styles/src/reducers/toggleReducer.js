@@ -1,11 +1,11 @@
 const toggleReducer = (state = false, action) => {
   switch (action.type) {
-    case 'TOGGLE':
-      return true;
-    case 'RESET_TOGGLE':
-      return false;
-    default:
-      return state;
+  case 'TOGGLE':
+    return true;
+  case 'RESET_TOGGLE':
+    return false;
+  default:
+    return state;
   }
 };
 

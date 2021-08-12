@@ -25,7 +25,7 @@ const BlogForm = ({ toggleForm }) => {
     setTitle('');
     setAuthor('');
     setUrl('');
-    history.push('/')
+    history.push('/');
   };
 
   return (

@@ -11,7 +11,7 @@ const CommentForm = ({ blogId }) => {
   const addComment = (event) => {
     event.preventDefault();
     dispatch(commentOnBlog({ content }, blogId));
-    setContent('')
+    setContent('');
   };
 
   return (

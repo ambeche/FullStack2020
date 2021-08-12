@@ -35,4 +35,11 @@ const createComment = async (comment, blogId) => {
   return res.data;
 };
 
-export default { getAll, createBlog, updateBlog, setToken, deleteBlog, createComment };
+export default {
+  getAll,
+  createBlog,
+  updateBlog,
+  setToken,
+  deleteBlog,
+  createComment
+};

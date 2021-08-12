@@ -96,4 +96,10 @@ const logoutUser = () => {
   };
 };
 
-export { usersReducer as default, setCurrentUser, logoutUser, addUser, setUsers };
+export {
+  usersReducer as default,
+  setCurrentUser,
+  logoutUser,
+  addUser,
+  setUsers
+};

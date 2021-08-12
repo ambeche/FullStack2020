@@ -4,23 +4,23 @@ import { notifyUser } from '../reducers/notificationReducer';
 
 const blogsReducer = (state = [], action) => {
   switch (action.type) {
-    case 'BLOGS':
-      return action.blogs;
-    case 'NEW_BLOG':
-      return [...state, action.newBlog];
-    case 'LIKE_BLOG':
-      // returns a new state contianing the modified blog
-      return state.map((b) =>
-        b.id !== action.likedBlog.id ? b : { ...action.likedBlog }
-      );
-    case 'DELETE_BLOG':
-      return state.filter((blog) => blog.id !== action.id);
-    case 'COMMENT_ON_BLOG':
-      return state.map((b) =>
-        b.id !== action.commentedBlog.id ? b : { ...action.commentedBlog }
-      );
-    default:
-      return state;
+  case 'BLOGS':
+    return action.blogs;
+  case 'NEW_BLOG':
+    return [...state, action.newBlog];
+  case 'LIKE_BLOG':
+    // returns a new state contianing the modified blog
+    return state.map((b) =>
+      b.id !== action.likedBlog.id ? b : { ...action.likedBlog }
+    );
+  case 'DELETE_BLOG':
+    return state.filter((blog) => blog.id !== action.id);
+  case 'COMMENT_ON_BLOG':
+    return state.map((b) =>
+      b.id !== action.commentedBlog.id ? b : { ...action.commentedBlog }
+    );
+  default:
+    return state;
   }
 };
 
@@ -80,7 +80,7 @@ const deleteBlog = (id) => {
           type: 'DELETE_BLOG',
           id
         });
-        dispatch(notifyUser(`blog successfully deleted?`, 1));
+        dispatch(notifyUser('blog successfully deleted?', 1));
       }
     } catch (err) {
       console.error('error', err);
