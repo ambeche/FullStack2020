@@ -1,6 +1,7 @@
 import axios from 'axios';
+import config from '../config';
 
-const baseUrl = '/api/users';
+const baseUrl = config.API_USERS;
 
 const getUsers = async () => {
   const res = await axios.get(`${baseUrl}`);
