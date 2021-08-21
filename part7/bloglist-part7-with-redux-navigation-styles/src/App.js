@@ -1,12 +1,11 @@
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Switch, NavLink, Route, useRouteMatch } from 'react-router-dom';
+import { Switch, Link, Route, useRouteMatch } from 'react-router-dom';
 import DataList from './components/DataList';
 import BlogForm from './components/BlogForm';
 import LoginForm from './components/LoginForm';
 import Notification from './components/Notification';
 import ToggleVisibility from './components/ToggleVisibility';
-import Button from './components/Button';
 import SignUpForm from './components/SignUpForm';
 import { setBlogs } from './reducers/blogsReducer';
 import { setCurrentUser, logoutUser, setUsers } from './reducers/usersReducer';
@@ -14,6 +13,8 @@ import Blog from './components/Blog';
 import User from './components/User';
 import UserDetails from './components/UserDetails';
 import BlogDetails from './components/BlogDetails';
+import { Container, Typography } from '@material-ui/core';
+import AppNav from './components/AppNav';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -48,26 +49,24 @@ const App = () => {
 
   if (!currentUser) {
     return (
-      <div>
+      <Container>
         <Notification />
         <LoginForm />
         <ToggleVisibility labelOne="Sign in" labelTwo="Register">
           <SignUpForm />
         </ToggleVisibility>
-      </div>
+      </Container>
     );
   }
 
   return (
-    <div>
-      <div>
-        <NavLink to="/">Blogs</NavLink>
-        <NavLink to="/users">Users</NavLink>
-        {currentUser.name} is logged in
-        <Button handleClick={handleLogout} label="logout" color="grey" />
-      </div>
+    <Container>
+      <AppNav currentUser={currentUser} handleLogout={handleLogout} />
       <Notification />
-      <h2>blogs</h2>
+
+      <Typography variant="h4" component="h3">
+        Bloging App
+      </Typography>
 
       <ToggleVisibility
         ref={blogFormRef}
@@ -94,7 +93,7 @@ const App = () => {
           </DataList>
         </Route>
       </Switch>
-    </div>
+    </Container>
   );
 };
 

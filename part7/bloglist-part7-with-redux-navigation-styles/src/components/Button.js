@@ -1,10 +1,10 @@
 import React from 'react';
+import { Button as MuiButton } from '@material-ui/core';
 import PropTypes from 'prop-types';
 
 const Button = ({ marginBottom, color, label, id, className, handleClick }) => {
   const buttonStyle = {
-    fontSize: label === '&#10003;' ? '20px' : '15px',
-    borderRadius: 6,
+    borderRadius: 4,
     borderColor: 'white',
     backgroundColor: color,
     textDecoration: 'none',
