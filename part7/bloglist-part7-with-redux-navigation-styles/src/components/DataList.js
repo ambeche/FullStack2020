@@ -2,6 +2,7 @@
 // it receives children components as props.children
 import React from 'react';
 import { useSelector } from 'react-redux';
+import Spinner from './Spinner';
 import PropTypes from 'prop-types';
 
 const DataList = ({ type, sortby, children }) => {
@@ -14,13 +15,10 @@ const DataList = ({ type, sortby, children }) => {
       .reverse();
   });
 
+  if (!dataList.length) return <Spinner />;
+
   return (
     <div>
-      {type === 'users' && (
-        <div>
-          <h2>Users</h2> <h4 style={{ marginLeft: '18%' }}>Blogs Created</h4>
-        </div>
-      )}
       {dataList?.map((data) =>
         // This approach is used instead of {props.children} because of the additional
         // props that are required to be passed to the child by this parent component.

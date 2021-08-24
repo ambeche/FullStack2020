@@ -10,11 +10,11 @@ import SignUpForm from './components/SignUpForm';
 import { setBlogs } from './reducers/blogsReducer';
 import { setCurrentUser, logoutUser, setUsers } from './reducers/usersReducer';
 import Blog from './components/Blog';
-import User from './components/User';
 import UserDetails from './components/UserDetails';
 import BlogDetails from './components/BlogDetails';
-import { Container, Typography } from '@material-ui/core';
+import { Container, List, Paper, Typography } from '@material-ui/core';
 import AppNav from './components/AppNav';
+import UserList from './components/UserList';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -64,7 +64,7 @@ const App = () => {
       <AppNav currentUser={currentUser} handleLogout={handleLogout} />
       <Notification />
 
-      <Typography variant="h4" component="h3">
+      <Typography variant="h5" component="h5">
         Bloging App
       </Typography>
 
@@ -83,14 +83,14 @@ const App = () => {
           <BlogDetails blog={detailsToBeShown(matchedBlog, blogs)} />
         </Route>
         <Route path="/users">
-          <DataList type="users" sortby="numberOfBlogs">
-            <User />
-          </DataList>
+          <UserList />
         </Route>
         <Route path="/">
-          <DataList type="blogs" sortby="likes">
-            <Blog />
-          </DataList>
+          <Container component={Paper}>
+            <DataList type="blogs" sortby="likes">
+              <Blog />
+            </DataList>
+          </Container>
         </Route>
       </Switch>
     </Container>

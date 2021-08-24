@@ -23,7 +23,8 @@
     "eject": "react-scripts eject",
     "eslint": "eslint . --fix",
     "cypress:open": "cypress open",
-    "cypress:cli": "cypress run"
+    "cypress:cli": "cypress run",
+    "rsync": "rsync -av --exclude=node_modules --exclude=build --exclude=package.json --exclude=package-lock.json ~/FullStack2020/part7/bloglist-part7-with-redux-navigation-styles/ ~/backend2020/bloglist-v2"
   },
   "eslintConfig": {
     "extends": "react-app"
