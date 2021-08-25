@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Switch, Link, Route, useRouteMatch } from 'react-router-dom';
+import { Switch, Route, useRouteMatch } from 'react-router-dom';
 import DataList from './components/DataList';
 import BlogForm from './components/BlogForm';
 import LoginForm from './components/LoginForm';
@@ -12,7 +12,7 @@ import { setCurrentUser, logoutUser, setUsers } from './reducers/usersReducer';
 import Blog from './components/Blog';
 import UserDetails from './components/UserDetails';
 import BlogDetails from './components/BlogDetails';
-import { Container, List, Paper, Typography } from '@material-ui/core';
+import { Container, Paper, Typography } from '@material-ui/core';
 import AppNav from './components/AppNav';
 import UserList from './components/UserList';
 
@@ -64,10 +64,6 @@ const App = () => {
       <AppNav currentUser={currentUser} handleLogout={handleLogout} />
       <Notification />
 
-      <Typography variant="h5" component="h5">
-        Bloging App
-      </Typography>
-
       <ToggleVisibility
         ref={blogFormRef}
         labelOne="cancel"
@@ -87,6 +83,9 @@ const App = () => {
         </Route>
         <Route path="/">
           <Container component={Paper}>
+            <Typography variant="h5" component="h5">
+              Blogs
+            </Typography>
             <DataList type="blogs" sortby="likes">
               <Blog />
             </DataList>
