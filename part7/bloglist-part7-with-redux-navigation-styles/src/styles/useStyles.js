@@ -107,7 +107,50 @@ const useStyles = makeStyles((theme) => ({
   },
   formsContainerComponent: {
     marginBottom: '3%'
-  }
+  },
+  footer: {
+    position: 'sticky',
+    backgroundColor: theme.palette.primary.light,
+    marginTop: theme.spacing(8)
+  },
+  footerGridItems: {
+    padding: theme.spacing(5)
+  },
+  footerCopyrightContainer: {
+    paddingBottom: theme.spacing(1.3)
+  },
+  footerCopyrightInnerContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    padding: theme.spacing(0.8)
+  },
+  footerCopyrightText: {
+    textAlign: 'center'
+  },
+  footerPrivacyPolicy: {
+    color: theme.palette.primary.dark,
+    marginLeft: theme.spacing(1)
+  },
+  footerMediaContainer: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    padding: theme.spacing(2),
+    paddingLeft: theme.spacing(5),
+    paddingRight: theme.spacing(5),
+    backgroundColor: theme.palette.primary.dark,
+    color: theme.palette.background.paper
+  },
+  footerMediaInnerContainer: {
+    flex: '2 1'
+  },
+  footerMediaIcons: {
+    marginRight: theme.spacing(2)
+  },
+  footerDeveloperInfo: {
+    flex: '1 0'
+  },
+  secondary: {}
 }));
 
 export default useStyles;

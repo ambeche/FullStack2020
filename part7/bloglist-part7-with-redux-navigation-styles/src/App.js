@@ -16,6 +16,7 @@ import { Container, Paper, Typography } from '@material-ui/core';
 import AppNav from './components/AppNav';
 import UserList from './components/UserList';
 import Profile from './components/Profile';
+import Footer from './components/Footer';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -104,6 +105,7 @@ const App = () => {
           </Container>
         </Route>
       </Switch>
+      <Footer />
     </Container>
   );
 };
