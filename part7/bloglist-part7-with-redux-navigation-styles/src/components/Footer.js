@@ -156,10 +156,8 @@ const Footer = () => {
             variant="subtitle2"
             component={Link}
             to={{
-              pathname:
-                'https://www.privacypolicies.com/live/7afcfa6e-99ac-45f6-be21-902bdb4fa5f2'
+              pathname: '/privacy-policy'
             }}
-            target="_blank"
             className={classes.footerPrivacyPolicy}
           >
             Privacy Policy
