@@ -155,7 +155,7 @@ const useStyles = makeStyles(
     },
     secondary: {}
   }),
-  // this fixes a bug that occurs durring pdt build by webpack; indexing conflict in the mui classess;
+  // this fixes a bug that occurs durring pdt/deployment build by webpack; indexing conflict in the mui classess;
   { index: 1 }
 );
 

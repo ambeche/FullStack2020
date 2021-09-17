@@ -111,7 +111,7 @@ const App = () => {
           </Container>
         </Route>
       </Switch>
-      <Footer />
+      <Footer currentUser={currentUser} />
     </Container>
   );
 };
