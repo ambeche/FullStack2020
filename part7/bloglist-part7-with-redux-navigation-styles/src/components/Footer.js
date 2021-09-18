@@ -13,7 +13,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import useStyles from '../styles/useStyles';
 
-const Footer = ({ currentUser }) => {
+const Footer = (props) => {
   const classes = useStyles();
 
   return (
@@ -24,27 +24,30 @@ const Footer = ({ currentUser }) => {
           <Typography variant="body2">tamanji.che@metropolia.fi</Typography>
         </div>
 
-        <IconButton
-          component={Link}
-          to={{ pathname: 'https://github.com/ambeche' }}
-          target="_blank"
-          color="inherit"
-        >
-          <GitHub className={classes.footerMediaIcons} />
-          GitHub
-        </IconButton>
-
-        <IconButton
-          component={Link}
-          to={{ pathname: 'https://linkedin.com/in/tamanji/' }}
-          target="_blank"
-          color="inherit"
-        >
-          <LinkedIn className={classes.footerMediaIcons} />
-          LinkedIn
-        </IconButton>
+        <div className={classes.footerMediaInnerContainer}>
+          <IconButton
+            component={Link}
+            to={{ pathname: 'https://github.com/ambeche' }}
+            target="_blank"
+            color="inherit"
+            rel="no-referrer"
+          >
+            <GitHub className={classes.footerMediaIcons} />
+            GitHub
+          </IconButton>
+          <IconButton
+            component={Link}
+            to={{ pathname: 'https://linkedin.com/in/tamanji/' }}
+            target="_blank"
+            color="inherit"
+            rel="no-referrer"
+          >
+            <LinkedIn className={classes.footerMediaIcons} />
+            LinkedIn
+          </IconButton>
+        </div>
       </div>
-      {currentUser && (
+      {props?.currentUser && (
         <Grid container spacing={3} className={classes.footerGridItems}>
           <Grid item xs={12} sm={6} md={3}>
             <Typography variant="h6">BlogLister</Typography>
@@ -73,6 +76,7 @@ const Footer = ({ currentUser }) => {
               href="https://redux.js.org/"
               target="_blank"
               color="inherit"
+              rel="no-referrer"
             >
               <ListItemText primary="Redux/Redux-thunk" />
             </ListItem>
@@ -81,6 +85,7 @@ const Footer = ({ currentUser }) => {
               href="https://material-ui.com/"
               target="_blank"
               color="inherit"
+              rel="no-referrer"
             >
               <ListItemText primary="Material-Ui" />
             </ListItem>
@@ -89,6 +94,7 @@ const Footer = ({ currentUser }) => {
               href="https://reactjs.org/"
               target="_blank"
               color="inherit"
+              rel="no-referrer"
             >
               <ListItemText primary="React" />
             </ListItem>
@@ -97,6 +103,7 @@ const Footer = ({ currentUser }) => {
               href="https://nodejs.org"
               target="_blank"
               color="inherit"
+              rel="no-referrer"
             >
               <ListItemText primary="Node.js" />
             </ListItem>
@@ -105,6 +112,7 @@ const Footer = ({ currentUser }) => {
               href="https://expressjs.com"
               target="_blank"
               color="inherit"
+              rel="no-referrer"
             >
               <ListItemText primary="Express.js" />
             </ListItem>
@@ -113,6 +121,7 @@ const Footer = ({ currentUser }) => {
               href="https://mongodb.com"
               target="_blank"
               color="inherit"
+              rel="no-referrer"
             >
               <ListItemText primary="MongoDB" />
             </ListItem>
@@ -128,6 +137,7 @@ const Footer = ({ currentUser }) => {
               href="https://fullstackopen.com/"
               target="_blank"
               color="inherit"
+              rel="no-referrer"
             >
               <ListItemText primary="Full stack open 2021" />
             </ListItem>
@@ -136,6 +146,7 @@ const Footer = ({ currentUser }) => {
               href="https://mooc.fi"
               target="_blank"
               color="inherit"
+              rel="no-referrer"
             >
               <ListItemText primary="MOOC.fi" />
             </ListItem>
@@ -148,7 +159,7 @@ const Footer = ({ currentUser }) => {
             variant="subtitle2"
             className={classes.footerCopyrightText}
           >
-            Copyright 2021 Che, All Rights Reserved
+            Copyright &copy; 2021, Che. All Rights Reserved.
           </Typography>
           <Divider
             orientation="vertical"
