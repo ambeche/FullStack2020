@@ -4,7 +4,7 @@ export const theme = createTheme({
   breakpoints: {
     values: {
       xxxs: 0,
-      xxs: 359,
+      xxs: 354,
       xs: 360,
       sm: 600,
       md: 960,
@@ -73,6 +73,33 @@ const useStyles = makeStyles(
         boxShadow: '0 0 0 0'
       }
     },
+    searchBar: {
+      display: 'flex',
+      flexFlow: 'row wrap',
+      padding: theme.spacing(2),
+      justifyContent: 'center',
+      backgroundColor: theme.palette.primary.light,
+      '& h6': {
+        flex: '0.2 1 auto',
+        marginRight: theme.spacing(1),
+        marginTop: theme.spacing(1.3),
+        color: theme.palette.background.paper,
+      }
+    },
+    searchBarTitle: {},
+    searchBox: {
+      flex: '1 1 auto',
+      display: 'flex',
+      flexFlow: 'row'
+    },
+    searchInput: {
+      flex: 1,
+      padding: theme.spacing(1.5)
+    },
+    searchIcon: {
+      padding: theme.spacing(1),
+      marginTop: theme.spacing(1)
+    },
     appName: {
       [theme.breakpoints.up('md')]: {
         marginRight: theme.spacing(6),
@@ -126,13 +153,13 @@ const useStyles = makeStyles(
     },
     commentSection: {
       padding: theme.spacing(3),
-      border: `0.5px solid ${theme.palette.primary.main}`,
-
+      border: `0.5px solid ${theme.palette.primary.main}`
     },
     commentContainer: {
       padding: '1%',
       marginBottom: theme.spacing(2),
-      backgroundColor: '#e1f5fe'
+      backgroundColor: '#e1f5fe',
+      overflowWrap: 'break-word',
     },
     commentText: {},
     roundedCornersBox: {
@@ -163,6 +190,7 @@ const useStyles = makeStyles(
         marginLeft: theme.spacing(4)
       }
     },
+    isLiked: {},
     listItemPrimary: {
       maxWidth: theme.spacing(35)
     },

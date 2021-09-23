@@ -13,9 +13,14 @@ import {
   Container
 } from '@material-ui/core';
 import CommentForm from './CommentForm';
-import { DeleteOutline, FavoriteBorderOutlined } from '@material-ui/icons';
+import {
+  DeleteOutline,
+  Favorite,
+  FavoriteBorderOutlined
+} from '@material-ui/icons';
 import useStyles from '../styles/useStyles';
-import MainModal from './MainModal';
+import styles from '../styles/BlogDetails.module.css';
+import helpers from './utils/helpers';
 
 const BlogDetails = ({ blog }) => {
   const dispatch = useDispatch();
@@ -23,11 +28,9 @@ const BlogDetails = ({ blog }) => {
   const classes = useStyles();
   const history = useHistory();
 
+  const likes = blog?.likes.value + 1;
   const likeBlog = () => {
-    dispatch(
-      modifyBlog({ ...blog, user: blog?.user?.id, likes: (blog.likes += 1) })
-    );
-    window.location.reload();
+    dispatch(modifyBlog({ ...blog, likes: { value: likes } }));
   };
 
   const handleBlogDeletion = () => {
@@ -37,16 +40,22 @@ const BlogDetails = ({ blog }) => {
     }
   };
   const commentsOnBlog = () =>
-    blog?.comments?.map((cmt) => (
-      <ListItem
-        dense
-        key={cmt.id}
-        component="div"
-        className={`${classes.commentContainer} ${classes.roundedCornersBox}`}
-      >
-        <ListItemText primary={cmt.content} className={classes.commentText} />
-      </ListItem>
-    ));
+    blog?.comments?.map((cmt) => {
+      return (
+        <ListItem
+          dense
+          key={cmt.id}
+          component="div"
+          className={`${classes.commentContainer} ${classes.roundedCornersBox}`}
+        >
+          <ListItemText
+            primary={cmt.content}
+            className={classes.commentText}
+            secondary={helpers.dateFormater(cmt)}
+          />
+        </ListItem>
+      );
+    });
 
   const toggleDeleteButton = () => {
     if (blog?.user?.username === currentUser.username) {
@@ -66,12 +75,25 @@ const BlogDetails = ({ blog }) => {
   if (!blog) return null;
 
   const secondaryActions = () => {
+    // checks if blog has already been liked by the current user
+    const isLiked = blog.likes.users.some(
+      (liker) => liker.liker === currentUser.id && liker.isLiked
+    );
+    console.log('like', blog.likes.users);
+    console.log('cuser', currentUser.id);
+
     return (
       <>
         <Button
           onClick={likeBlog}
           size="small"
-          startIcon={<FavoriteBorderOutlined fontSize="small" />}
+          startIcon={
+            isLiked ? (
+              <Favorite fontSize="small" className={classes.isLiked} />
+            ) : (
+              <FavoriteBorderOutlined fontSize="small" />
+            )
+          }
           className={classes.secondaryActionBtn}
         >
           like
@@ -109,14 +131,19 @@ const BlogDetails = ({ blog }) => {
           </ListItemSecondaryAction>
         </ListItem>
         <ListItem>
-          <ListItemText primary="Number of Likes" secondary={blog.likes} />
+          <ListItemText
+            primary="Number of Likes"
+            secondary={blog.likes.value}
+          />
           <ListItemSecondaryAction
             className={classes.listSecondaryActionsDesktop}
           >
             {secondaryActions()}
           </ListItemSecondaryAction>
         </ListItem>
-        <ListItem className={classes.listSecondaryActionsMobile}>
+        <ListItem
+          className={`${classes.listSecondaryActionsMobile} ${styles.xxsmall}`}
+        >
           {linkToBlog()}
           {secondaryActions()}
         </ListItem>
